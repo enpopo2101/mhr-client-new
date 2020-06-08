@@ -29,7 +29,7 @@ const routes = [
       },
       {
         path: "award-penalty",
-        name: "award-penalty",
+        name: "Khen thưởng - Kỉ luật",
         component: AwardPenalty,
         meta: { requiresAuth: true }
       },

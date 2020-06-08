@@ -2,13 +2,22 @@
   <div class="wrapper">
     <side-bar>
       <template slot="links">
-        <sidebar-link to="/dashboard" name="Dashboard" icon="ti-panel"/>
-        <sidebar-link to="/stats" name="User Profile" icon="ti-user"/>
-        <sidebar-link to="/table-list" name="Table List" icon="ti-view-list-alt"/>
-        <sidebar-link to="/typography" name="Typography" icon="ti-text"/>
-        <sidebar-link to="/icons" name="Icons" icon="ti-pencil-alt2"/>
-        <sidebar-link to="/maps" name="Map" icon="ti-map"/>
-        <sidebar-link to="/notifications" name="Notifications" icon="ti-bell"/>
+        <sidebar-link to="/dashboard" name="Dashboard" icon="ti-panel" />
+        <sidebar-link to="/stats" name="User Profile" icon="ti-user" />
+        <sidebar-link
+          to="/table-list"
+          name="Table List"
+          icon="ti-view-list-alt"
+        />
+        <sidebar-link to="/typography" name="Typography" icon="ti-text" />
+        <sidebar-link to="/icons" name="Icons" icon="ti-pencil-alt2" />
+        <sidebar-link to="/maps" name="Map" icon="ti-map" />
+        <sidebar-link
+          to="/award-penalty"
+          name="Khen thưởng - Kỉ luật"
+          icon="ti-view-list-alt"
+        />
+        <sidebar-link to="/notifications" name="Notifications" icon="ti-bell" />
       </template>
       <mobile-menu>
         <li class="nav-item">
@@ -17,10 +26,12 @@
             <p>Stats</p>
           </a>
         </li>
-        <drop-down class="nav-item"
-                   title="5 Notifications"
-                   title-classes="nav-link"
-                   icon="ti-bell">
+        <drop-down
+          class="nav-item"
+          title="5 Notifications"
+          title-classes="nav-link"
+          icon="ti-bell"
+        >
           <a class="dropdown-item">Notification 1</a>
           <a class="dropdown-item">Notification 2</a>
           <a class="dropdown-item">Notification 3</a>
@@ -39,25 +50,18 @@
     <div class="main-panel">
       <top-navbar></top-navbar>
 
-      <dashboard-content @click.native="toggleSidebar">
-
-      </dashboard-content>
-
-      <content-footer></content-footer>
+      <dashboard-content @click.native="toggleSidebar"> </dashboard-content>
     </div>
   </div>
 </template>
-<style lang="scss">
-</style>
+<style lang="scss"></style>
 <script>
 import TopNavbar from "./TopNavbar.vue";
-import ContentFooter from "./ContentFooter.vue";
 import DashboardContent from "./Content.vue";
 import MobileMenu from "./MobileMenu";
 export default {
   components: {
     TopNavbar,
-    ContentFooter,
     DashboardContent,
     MobileMenu
   },
