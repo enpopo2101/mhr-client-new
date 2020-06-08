@@ -54,7 +54,7 @@ export default {
           type: "success"
         });
         localStorage.setItem("token", res.data.token);
-        this.$router.push('/dashboard')
+        this.$router.push("/dashboard");
       } catch (error) {
         this.$notify({
           title: "Login failed",

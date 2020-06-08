@@ -10,7 +10,8 @@ import Icons from "@/pages/Icons.vue";
 import Maps from "@/pages/Maps.vue";
 import Typography from "@/pages/Typography.vue";
 import TableList from "@/pages/TableList.vue";
-import Login from "../pages/Login.vue";
+import Login from "@/pages/Login.vue";
+import AwardPenalty from "@/pages/AwardPenalty.vue";
 
 const routes = [
   { path: "/login", component: Login, name: "Login" },
@@ -24,6 +25,12 @@ const routes = [
         path: "dashboard",
         name: "dashboard",
         component: Dashboard,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: "award-penalty",
+        name: "award-penalty",
+        component: AwardPenalty,
         meta: { requiresAuth: true }
       },
       {
