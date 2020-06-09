@@ -18,12 +18,16 @@ import App from "./App";
 import router from "./router/index";
 import axios from "./api/agent";
 import VueAxios from "vue-axios";
+import VModal from "vue-js-modal";
+import VueAutosuggest from "vue-autosuggest";
 
 import PaperDashboard from "./plugins/paperDashboard";
 import "vue-notifyjs/themes/default.css";
 
 Vue.use(VueAxios, axios);
 Vue.use(PaperDashboard);
+Vue.use("vue-autosuggest", VueAutosuggest);
+Vue.use(VModal, { dialog: true, dynamic: true, injectModalsContainer: true });
 Vue.prototype.$axios = axios;
 
 /* eslint-disable no-new */
