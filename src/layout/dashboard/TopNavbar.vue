@@ -17,6 +17,16 @@
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
             <a href="#" class="nav-link">
+              <img
+                class="avatar border-white"
+                src="@/assets/img/faces/face-2.jpg"
+                alt="..."
+              />
+              <p style="margin: 0 0 0 6px">Bùi</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
               <i class="ti-panel"></i>
               <p>Stats</p>
             </a>
@@ -53,6 +63,11 @@ export default {
       const { name } = this.$route;
       return this.capitalizeFirstLetter(name);
     }
+    // getName() {
+    //   // const name = localStorage.getItem("fullname");
+    //   // return this.capitalizeFirstLetter(name);
+    //   return getUserName();
+    // }
   },
   data() {
     return {
@@ -60,6 +75,9 @@ export default {
     };
   },
   methods: {
+    getUserName() {
+      return localStorage.getItem("fullname");
+    },
     logout() {
       localStorage.removeItem("token");
       this.$router.go(-1);
@@ -82,4 +100,10 @@ export default {
   }
 };
 </script>
-<style></style>
+<style>
+img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+</style>

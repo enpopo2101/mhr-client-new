@@ -2,22 +2,23 @@
   <div class="wrapper">
     <side-bar>
       <template slot="links">
-        <sidebar-link to="/dashboard" name="Dashboard" icon="ti-panel" />
-        <sidebar-link to="/stats" name="User Profile" icon="ti-user" />
+        <sidebar-link to="/stats" name="Quản lý tài khoản" icon="ti-panel" />
+        <sidebar-link to="/dashboard" name="Quản lý nhân viên" icon="ti-user" />
         <sidebar-link
-          to="/table-list"
-          name="Table List"
+          to="/calendar"
+          name="Lịch làm việc"
           icon="ti-view-list-alt"
         />
-        <sidebar-link to="/typography" name="Typography" icon="ti-text" />
-        <sidebar-link to="/icons" name="Icons" icon="ti-pencil-alt2" />
-        <sidebar-link to="/maps" name="Map" icon="ti-map" />
+        <sidebar-link to="/typography" name="Phòng ban" icon="ti-text" />
+        <sidebar-link to="/icons" name="Chức vụ" icon="ti-pencil-alt2" />
+        <sidebar-link to="/maps" name="Quản lý hợp đồng" icon="ti-map" />
+        <sidebar-link to="/maps" name="Điều chuyển công tác" icon="ti-map" />
         <sidebar-link
           to="/award-penalty"
           name="Khen thưởng - Kỉ luật"
           icon="ti-view-list-alt"
         />
-        <sidebar-link to="/notifications" name="Notifications" icon="ti-bell" />
+        <sidebar-link to="/massmail" name="Gửi massmail" icon="ti-bell" />
       </template>
       <mobile-menu>
         <li class="nav-item">

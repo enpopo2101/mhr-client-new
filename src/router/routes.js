@@ -12,6 +12,7 @@ import Typography from "@/pages/Typography.vue";
 import TableList from "@/pages/TableList.vue";
 import Login from "@/pages/Login.vue";
 import AwardPenalty from "@/pages/AwardPenalty.vue";
+import Calendar from "@/pages/Calendar.vue";
 
 const routes = [
   { path: "/login", component: Login, name: "Login" },
@@ -31,6 +32,12 @@ const routes = [
         path: "award-penalty",
         name: "Khen thưởng - Kỉ luật",
         component: AwardPenalty,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: "calendar",
+        name: "Lịch làm việc",
+        component: Calendar,
         meta: { requiresAuth: true }
       },
       {

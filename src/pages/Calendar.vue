@@ -7,7 +7,7 @@
           <input type="text" class="form-control" />
         </div>
         <div class="col-md d-flex">
-          <label>Chức vụ</label>
+          <label>Địa điểm</label>
           <input type="text" class="form-control" />
         </div>
       </div>
@@ -25,11 +25,21 @@
         </select>
       </div>
       <div>
-        <h5><b>Danh sách nhân viên khen thưởng kỉ luật</b></h5>
+        <h5><b>Danh sách lịch làm việc</b></h5>
       </div>
-      <button class="btn btn-primary" v-on:click="showModalCreateAP">
-        <i class="ti-plus" style="margin-right:4px"></i> Thêm mới
-      </button>
+      <div class="d-flex justify-content-start align-items-center">
+        <button class="btn btn-danger" style="width: 100px !important">
+          <i class="fas fa-minus" style="margin-right:4px"></i>
+          Xóa
+        </button>
+        <button
+          class="btn btn-primary"
+          v-on:click="showModalCreateAP"
+          style="width: 140px !important"
+        >
+          <i class="ti-plus" style="margin-right:4px"></i> Thêm mới
+        </button>
+      </div>
     </div>
 
     <vuetable
@@ -52,10 +62,7 @@
         >
           Chi tiết
         </button>
-        <button
-          class="btn btn-success"
-          v-on:click="handleCheckbox(props.rowData.index)"
-        >
+        <button class="btn btn-success" v-on:click="showModalFixAP">
           Sửa
         </button>
         <button
@@ -66,6 +73,7 @@
         </button>
       </div>
     </vuetable>
+    <!-- modal create -->
     <modal
       name="createNewAP"
       :clickToClose="true"
@@ -73,12 +81,12 @@
       :max-width="740"
       :pivotY="0.2"
       width="60%"
-      height="60% auto"
+      height="80%"
     >
       <div class="container">
         <div class="row d-flex justify-content-between align-items-baseline">
           <p style="margin-left: 10px; font-size: 20px">
-            <b>Thêm mới nhân viên kỉ luật khen thưởng</b>
+            <b>Thêm lịch làm việc</b>
           </p>
           <button class="btn btn-default" v-on:click="hideModalCreateAP">
             <i class="ti-close"></i>
@@ -86,6 +94,14 @@
         </div>
         <div class="row container">
           <form class="form-horizontal col-md-12" @submit="submit">
+            <div class="form-group row">
+              <label for="title" class="col-md-3 col-form-label"
+                >Mã nhân viên</label
+              >
+              <div class="controls col-md-8">
+                <input class="form-control" required v-model="body.title" />
+              </div>
+            </div>
             <user-picker
               v-on:get-user-value="getUserValue"
               label="Họ và tên"
@@ -93,16 +109,13 @@
             <div class="form-group row">
               <label for="title" class="col-md-3 col-form-label">Tiêu đề</label>
               <div class="controls col-md-8">
-                <input
-                  class="form-control"
-                  required
-                  v-model="body.title"
-                  placeholder="Tiêu đề"
-                />
+                <input class="form-control" required v-model="body.title" />
               </div>
             </div>
             <div class="form-group row">
-              <label for="title" class="col-md-3 col-form-label">Loại</label>
+              <label for="title" class="col-md-3 col-form-label"
+                >Địa điểm</label
+              >
               <div class="controls col-md-8">
                 <select class="custom-select" v-model="body.type">
                   <option value="award">Khen thưởng</option>
@@ -110,23 +123,23 @@
                 </select>
               </div>
             </div>
+            <div>
+              <div class="d-flex justify-content-around">
+                <div>
+                  <label>Bắt đầu</label>
+                </div>
+                <div>
+                  <label>Kết thúc</label>
+                </div>
+              </div>
+            </div>
             <div class="form-group row">
-              <label for="title" class="col-md-3 col-form-label"
-                >Ngày ra quyết định</label
-              >
+              <label for="title" class="col-md-3 col-form-label">Ngày</label>
               <div class="controls col-md-8">
                 <date-picker
                   v-model="body.decisionDate"
                   input-class="form-control"
                 ></date-picker>
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="title" class="col-md-3 col-form-label"
-                >Nội dung</label
-              >
-              <div class="controls col-md-8">
-                <textarea v-model="body.content" class="form-control" />
               </div>
             </div>
           </form>
@@ -147,6 +160,96 @@
         </div>
       </div>
     </modal>
+    <!-- modal create end -->
+
+    <!-- modal fix -->
+    <modal
+      name="fixAP"
+      :clickToClose="true"
+      :min-width="320"
+      :max-width="740"
+      :pivotY="0.2"
+      width="60%"
+      height="80%"
+    >
+      <div class="container">
+        <div class="row d-flex justify-content-between align-items-baseline">
+          <p style="margin-left: 10px; font-size: 20px">
+            <b>Sửa lịch làm việc</b>
+          </p>
+          <button class="btn btn-default" v-on:click="hideModalFixAP">
+            <i class="ti-close"></i>
+          </button>
+        </div>
+        <div class="row container">
+          <form class="form-horizontal col-md-12" @submit="submit">
+            <div class="form-group row">
+              <label for="title" class="col-md-3 col-form-label"
+                >Mã nhân viên</label
+              >
+              <div class="controls col-md-8">
+                <input class="form-control" required v-model="body.title" />
+              </div>
+            </div>
+            <user-picker
+              v-on:get-user-value="getUserValue"
+              label="Họ và tên"
+            ></user-picker>
+            <div class="form-group row">
+              <label for="title" class="col-md-3 col-form-label">Tiêu đề</label>
+              <div class="controls col-md-8">
+                <input class="form-control" required v-model="body.title" />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="title" class="col-md-3 col-form-label"
+                >Địa điểm</label
+              >
+              <div class="controls col-md-8">
+                <select class="custom-select" v-model="body.type">
+                  <option value="award">Khen thưởng</option>
+                  <option value="penalty">Kỉ luật</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <div class="d-flex justify-content-around">
+                <div>
+                  <label>Bắt đầu</label>
+                </div>
+                <div>
+                  <label>Kết thúc</label>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="title" class="col-md-3 col-form-label">Ngày</label>
+              <div class="controls col-md-8">
+                <date-picker
+                  v-model="body.decisionDate"
+                  input-class="form-control"
+                ></date-picker>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="row col-md d-flex justify-content-center">
+          <div style="width: 200px !important">
+            <button
+              style="width: 6em"
+              type="submit"
+              @submit="submit"
+              class="btn btn-success"
+              @click="submit"
+            >
+              Sửa lịch
+            </button>
+            <button style="width: 6em" class="btn btn-danger">Huỷ</button>
+          </div>
+        </div>
+      </div>
+    </modal>
+    <!-- modal fix end -->
   </div>
 </template>
 <script>
@@ -167,15 +270,9 @@ export default {
         { name: "index", title: "STT", width: "5%" },
         { name: "checkbox-slot", title: "Select", width: "5%" },
         { name: "action-slot", title: "Tác vụ", width: "30%" },
-        { name: "fullName", title: "Họ và tên", width: "20%" },
-        {
-          name: "type",
-          title: "Loại",
-          width: "10%",
-          formatter(value) {
-            return value === "award" ? "Khen thưởng" : "Kỉ luật";
-          }
-        },
+        { name: "_id", title: "Mã người dùng", width: "10%" },
+        { name: "fullName", title: "Họ và tên", width: "15%" },
+        { name: "fullName", title: "Địa điểm", width: "15%" },
         { name: "title", title: "Tiêu đề", width: "30%" }
       ],
       body: {},
@@ -203,6 +300,13 @@ export default {
   methods: {
     showModalCreateAP() {
       this.$modal.show("createNewAP", {
+        width: "500px",
+        maxWidth: "1000px",
+        minWidth: "300px"
+      });
+    },
+    showModalFixAp() {
+      this.$modal.show("fixAP", {
         width: "500px",
         maxWidth: "1000px",
         minWidth: "300px"
@@ -236,6 +340,9 @@ export default {
     },
     hideModalCreateAP() {
       this.$modal.hide("createNewAP");
+    },
+    hideModalFixAP() {
+      this.$modal.hide("fixAP");
     }
   }
 };
