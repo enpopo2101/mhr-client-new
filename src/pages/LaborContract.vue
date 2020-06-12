@@ -3,7 +3,7 @@
     <div class="filter-panel">
       <div class="row">
         <div class="col-md d-flex align-items-center">
-          <label style="width: 100px !important">Họ và tên</label>
+          <label style="width: 100px !important">Họ và tên alo</label>
           <input type="text" class="form-control" />
         </div>
         <div class="col-md d-flex align-items-center">
