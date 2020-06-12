@@ -1,7 +1,7 @@
 <template>
   <card class="card-user">
     <div slot="image">
-      <img src="@/assets/img/background.jpg" alt="..." />
+      <!-- <img src="@/assets/img/background.jpg" alt="..." /> -->
     </div>
     <div>
       <div class="author">
@@ -11,11 +11,11 @@
           alt="..."
         />
         <h4 class="title">
-          Chet Faker
+          {{ getFullName() }}
           <br />
-          <a href="#">
+          <!-- <a href="#">
             <small>@chetfaker</small>
-          </a>
+          </a> -->
         </h4>
       </div>
       <p class="description text-center">
@@ -26,7 +26,7 @@
       </p>
     </div>
     <hr />
-    <div class="text-center">
+    <!-- <div class="text-center">
       <div class="row">
         <div
           v-for="(info, index) in details"
@@ -40,7 +40,7 @@
           </h5>
         </div>
       </div>
-    </div>
+    </div> -->
   </card>
 </template>
 <script>
@@ -73,6 +73,9 @@ export default {
       } else {
         return "col-lg-3";
       }
+    },
+    getFullName() {
+      return localStorage.getItem("fullName");
     }
   }
 };

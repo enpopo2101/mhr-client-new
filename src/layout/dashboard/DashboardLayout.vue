@@ -2,8 +2,12 @@
   <div class="wrapper">
     <side-bar>
       <template slot="links">
-        <sidebar-link to="/stats" name="Quản lý tài khoản" icon="ti-panel" />
-        <sidebar-link to="/dashboard" name="Quản lý nhân viên" icon="ti-user" />
+        <sidebar-link to="/stats" name="Tài khoản" icon="ti-user" />
+        <sidebar-link
+          to="human-resoure-management"
+          name="Quản lý nhân viên"
+          icon="ti-panel"
+        />
         <sidebar-link
           to="/calendar"
           name="Lịch làm việc"
@@ -18,6 +22,7 @@
           name="Khen thưởng - Kỉ luật"
           icon="ti-view-list-alt"
         />
+        <sidebar-link to="/icons" name="Icons" icon="ti-pencil-alt2" />
         <sidebar-link to="/massmail" name="Gửi massmail" icon="ti-bell" />
       </template>
       <mobile-menu>

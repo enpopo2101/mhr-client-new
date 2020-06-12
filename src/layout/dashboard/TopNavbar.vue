@@ -22,18 +22,18 @@
                 src="@/assets/img/faces/face-2.jpg"
                 alt="..."
               />
-              <p style="margin: 0 0 0 6px">Bùi</p>
+              <p style="margin: 0 0 0 5px">{{ getFullName() }}</p>
             </a>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="ti-panel"></i>
-              <p>Stats</p>
+              <p>Thống kê</p>
             </a>
           </li>
           <drop-down
             class="nav-item"
-            title="5 Notifications"
+            title="5 Thông báo"
             title-classes="nav-link"
             icon="ti-bell"
           >
@@ -47,7 +47,7 @@
             <a href="#" class="nav-link">
               <i class="ti-settings"></i>
               <p v-on:click="logout">
-                Logout
+                Đăng xuất
               </p>
             </a>
           </li>
@@ -63,20 +63,18 @@ export default {
       const { name } = this.$route;
       return this.capitalizeFirstLetter(name);
     }
-    // getName() {
-    //   // const name = localStorage.getItem("fullname");
-    //   // return this.capitalizeFirstLetter(name);
-    //   return getUserName();
-    // }
   },
   data() {
     return {
       activeNotifications: false
     };
   },
+  mounted() {
+    // this.data = localStorage.getItem("fullame");
+  },
   methods: {
-    getUserName() {
-      return localStorage.getItem("fullname");
+    getFullName() {
+      return localStorage.getItem("fullName");
     },
     logout() {
       localStorage.removeItem("token");

@@ -34,7 +34,7 @@
         </button>
         <button
           class="btn btn-primary"
-          v-on:click="showModalCreateAP"
+          v-on:click="showModalCreateNewWorkCalendar"
           style="width: 140px !important"
         >
           <i class="ti-plus" style="margin-right:4px"></i> Thêm mới
@@ -58,11 +58,14 @@
       <div slot="action-slot" slot-scope="props">
         <button
           class="btn btn-primary"
-          v-on:click="handleCheckbox(props.rowData.index)"
+          v-on:click="showModalViewDetailWorkCalendar"
         >
           Chi tiết
         </button>
-        <button class="btn btn-success" v-on:click="showModalFixAP">
+        <button
+          class="btn btn-success"
+          v-on:click="showModalUpdateWorkCalendar"
+        >
           Sửa
         </button>
         <button
@@ -75,20 +78,23 @@
     </vuetable>
     <!-- modal create -->
     <modal
-      name="createNewAP"
+      name="createNewWorkCalendar"
       :clickToClose="true"
       :min-width="320"
       :max-width="740"
       :pivotY="0.2"
       width="60%"
-      height="80%"
+      height="90%"
     >
       <div class="container">
         <div class="row d-flex justify-content-between align-items-baseline">
           <p style="margin-left: 10px; font-size: 20px">
             <b>Thêm lịch làm việc</b>
           </p>
-          <button class="btn btn-default" v-on:click="hideModalCreateAP">
+          <button
+            class="btn btn-default"
+            v-on:click="hideModalCreateNewWorkCalendar"
+          >
             <i class="ti-close"></i>
           </button>
         </div>
@@ -99,7 +105,7 @@
                 >Mã nhân viên</label
               >
               <div class="controls col-md-8">
-                <input class="form-control" required v-model="body.title" />
+                <input class="form-control" required v-model="body._id" />
               </div>
             </div>
             <user-picker
@@ -123,14 +129,17 @@
                 </select>
               </div>
             </div>
-            <div>
-              <div class="d-flex justify-content-around">
-                <div>
-                  <label>Bắt đầu</label>
-                </div>
-                <div>
-                  <label>Kết thúc</label>
-                </div>
+            <div
+              class="d-flex justify-content-around"
+              style="padding: 0 0 10px 0"
+            >
+              <div class="d-flex justify-content-around align-items-center">
+                <label style="width: 100px !important">Bắt đầu</label>
+                <input type="time" class="form-control" />
+              </div>
+              <div class="d-flex justify-content-around align-items-center">
+                <label style="width: 100px !important">Kết thúc</label>
+                <input type="time" class="form-control" />
               </div>
             </div>
             <div class="form-group row">
@@ -162,22 +171,25 @@
     </modal>
     <!-- modal create end -->
 
-    <!-- modal fix -->
+    <!-- modal update -->
     <modal
-      name="fixAP"
+      name="updateWorkCalendar"
       :clickToClose="true"
       :min-width="320"
       :max-width="740"
       :pivotY="0.2"
       width="60%"
-      height="80%"
+      height="90%"
     >
       <div class="container">
         <div class="row d-flex justify-content-between align-items-baseline">
           <p style="margin-left: 10px; font-size: 20px">
             <b>Sửa lịch làm việc</b>
           </p>
-          <button class="btn btn-default" v-on:click="hideModalFixAP">
+          <button
+            class="btn btn-default"
+            v-on:click="hideModalUpdateWorkCalendar"
+          >
             <i class="ti-close"></i>
           </button>
         </div>
@@ -212,14 +224,17 @@
                 </select>
               </div>
             </div>
-            <div>
-              <div class="d-flex justify-content-around">
-                <div>
-                  <label>Bắt đầu</label>
-                </div>
-                <div>
-                  <label>Kết thúc</label>
-                </div>
+            <div
+              class="d-flex justify-content-around"
+              style="padding: 0 0 10px 0"
+            >
+              <div class="d-flex justify-content-around align-items-center">
+                <label style="width: 100px !important">Bắt đầu</label>
+                <input type="time" class="form-control" />
+              </div>
+              <div class="d-flex justify-content-around align-items-center">
+                <label style="width: 100px !important">Kết thúc</label>
+                <input type="time" class="form-control" />
               </div>
             </div>
             <div class="form-group row">
@@ -249,7 +264,112 @@
         </div>
       </div>
     </modal>
-    <!-- modal fix end -->
+    <!-- modal update end -->
+    <modal
+      name="viewDetailWorkCalendar"
+      :clickToClose="true"
+      :min-width="320"
+      :max-width="740"
+      :pivotY="0.2"
+      width="60%"
+      height="90% auto"
+    >
+      <div class="container">
+        <div class="row d-flex justify-content-between align-items-baseline">
+          <p style="margin-left: 10px; font-size: 20px">
+            <b>Chi tiết lịch làm việc</b>
+          </p>
+          <button
+            class="btn btn-default"
+            v-on:click="hideModalViewDetailWorkCalendar"
+          >
+            <i class="ti-close"></i>
+          </button>
+        </div>
+        <div class="row container">
+          <form class="form-horizontal col-md-12" @submit="submit">
+            <div class="form-group row">
+              <label for="title" class="col-md-3 col-form-label"
+                >Mã nhân viên</label
+              >
+              <div class="controls col-md-8">
+                <input
+                  class="form-control"
+                  disabled
+                  required
+                  v-model="body.title"
+                />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="title" class="col-md-3 col-form-label"
+                >Họ và tên</label
+              >
+              <div class="controls col-md-8">
+                <input
+                  class="form-control"
+                  disabled
+                  required
+                  v-model="body.title"
+                />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="title" class="col-md-3 col-form-label">Tiêu đề</label>
+              <div class="controls col-md-8">
+                <input
+                  class="form-control"
+                  disabled
+                  required
+                  v-model="body.title"
+                />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="title" class="col-md-3 col-form-label"
+                >Địa điểm</label
+              >
+              <div class="controls col-md-8">
+                <input
+                  class="form-control"
+                  disabled
+                  required
+                  v-model="body.title"
+                />
+              </div>
+            </div>
+            <div
+              class="d-flex justify-content-around"
+              style="padding: 0 0 10px 0"
+            >
+              <div class="d-flex justify-content-around align-items-center">
+                <label style="width: 100px !important">Bắt đầu</label>
+                <input type="time" disabled class="form-control" />
+              </div>
+              <div class="d-flex justify-content-around align-items-center">
+                <label style="width: 100px !important">Kết thúc</label>
+                <input type="time" disabled class="form-control" />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="title" class="col-md-3 col-form-label">Ngày</label>
+              <div class="controls col-md-8">
+                <input
+                  class="form-control"
+                  disabled
+                  required
+                  v-model="body.title"
+                  placeholder="yyyy-mm-dd"
+                />
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </modal>
+    <!-- modal view detail work calendar -->
+
+    <!-- modal view detail work calendar end -->
   </div>
 </template>
 <script>
@@ -298,15 +418,22 @@ export default {
   },
 
   methods: {
-    showModalCreateAP() {
-      this.$modal.show("createNewAP", {
+    showModalCreateNewWorkCalendar() {
+      this.$modal.show("createNewWorkCalendar", {
         width: "500px",
         maxWidth: "1000px",
         minWidth: "300px"
       });
     },
-    showModalFixAp() {
-      this.$modal.show("fixAP", {
+    showModalUpdateWorkCalendar() {
+      this.$modal.show("updateWorkCalendar", {
+        width: "500px",
+        maxWidth: "1000px",
+        minWidth: "300px"
+      });
+    },
+    showModalViewDetailWorkCalendar() {
+      this.$modal.show("viewDetailWorkCalendar", {
         width: "500px",
         maxWidth: "1000px",
         minWidth: "300px"
@@ -338,11 +465,14 @@ export default {
         });
       }
     },
-    hideModalCreateAP() {
-      this.$modal.hide("createNewAP");
+    hideModalCreateNewWorkCalendar() {
+      this.$modal.hide("createNewWorkCalendar");
     },
-    hideModalFixAP() {
-      this.$modal.hide("fixAP");
+    hideModalUpdateWorkCalendar() {
+      this.$modal.hide("updateWorkCalendar");
+    },
+    hideModalViewDetailWorkCalendar() {
+      this.$modal.hide("viewDetailWorkCalendar");
     }
   }
 };

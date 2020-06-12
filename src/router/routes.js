@@ -13,6 +13,7 @@ import TableList from "@/pages/TableList.vue";
 import Login from "@/pages/Login.vue";
 import AwardPenalty from "@/pages/AwardPenalty.vue";
 import Calendar from "@/pages/Calendar.vue";
+import HumanResourceManagement from "@/pages/HumanResourceManagement.vue";
 
 const routes = [
   { path: "/login", component: Login, name: "Login" },
@@ -23,9 +24,9 @@ const routes = [
     meta: { requiresAuth: true },
     children: [
       {
-        path: "dashboard",
-        name: "dashboard",
-        component: Dashboard,
+        path: "human-resoure-management",
+        name: "Quản lí nhân viên",
+        component: HumanResourceManagement,
         meta: { requiresAuth: true }
       },
       {
@@ -42,7 +43,7 @@ const routes = [
       },
       {
         path: "stats",
-        name: "stats",
+        name: "Tài khoản",
         component: UserProfile,
         meta: { requiresAuth: true }
       },
