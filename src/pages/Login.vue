@@ -27,7 +27,7 @@
     </form>
     <div class="flex-row">
       <div class="check-remember">
-        <input type="checkbox">
+        <input type="checkbox" />
         <label>Remember me</label>
       </div>
       <a href="#">Quên mật khẩu ?</a>
@@ -57,7 +57,9 @@ export default {
           type: "success"
         });
         localStorage.setItem("token", res.data.token);
-        this.$router.push("/dashboard");
+        localStorage.setItem("fullName", res.data.fullName);
+        // console.log(res.data);
+        this.$router.push("/dashboard", { fullName: res.data.fullName });
       } catch (error) {
         this.$notify({
           title: "Login failed",
@@ -88,14 +90,14 @@ export default {
   font-size: 40px;
   padding: 13px 0;
   text-align: center;
-  color: #177DFF;
+  color: #177dff;
 }
 
 .login-box .textbox {
   width: 100%;
   margin: 8px 0;
   padding: 8px 0;
-  border-bottom: 1px solid #177DFF;
+  border-bottom: 1px solid #177dff;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -115,7 +117,7 @@ export default {
   height: 15px;
   margin: 5px;
   padding: 5px 0;
-  color: #177DFF;;
+  color: #177dff;
 }
 
 .flex-row {
@@ -133,7 +135,7 @@ export default {
   width: 120px;
   height: 40px;
   border: none;
-  background-color: #177DFF;
+  background-color: #177dff;
   border-radius: 20px;
 }
 </style>

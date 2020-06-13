@@ -17,13 +17,23 @@
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
             <a href="#" class="nav-link">
+              <img
+                class="avatar border-white"
+                src="@/assets/img/faces/face-2.jpg"
+                alt="..."
+              />
+              <p style="margin: 0 0 0 5px">{{ getFullName() }}</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
               <i class="ti-panel"></i>
-              <p>Stats</p>
+              <p>Thống kê</p>
             </a>
           </li>
           <drop-down
             class="nav-item"
-            title="5 Notifications"
+            title="5 Thông báo"
             title-classes="nav-link"
             icon="ti-bell"
           >
@@ -37,7 +47,7 @@
             <a href="#" class="nav-link">
               <i class="ti-settings"></i>
               <p v-on:click="logout">
-                Logout
+                Đăng xuất
               </p>
             </a>
           </li>
@@ -59,7 +69,13 @@ export default {
       activeNotifications: false
     };
   },
+  mounted() {
+    // this.data = localStorage.getItem("fullame");
+  },
   methods: {
+    getFullName() {
+      return localStorage.getItem("fullName");
+    },
     logout() {
       localStorage.removeItem("token");
       this.$router.go(-1);
@@ -82,4 +98,10 @@ export default {
   }
 };
 </script>
-<style></style>
+<style>
+img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+</style>
