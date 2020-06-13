@@ -24,7 +24,13 @@ const routes = [
     meta: { requiresAuth: true },
     children: [
       {
-        path: "human-resoure-management",
+        path: "dashboard",
+        name: "dashboard",
+        component: Dashboard,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: "human-resource-management",
         name: "Quản lí nhân viên",
         component: HumanResourceManagement,
         meta: { requiresAuth: true }

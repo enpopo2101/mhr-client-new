@@ -4,7 +4,7 @@
       <template slot="links">
         <sidebar-link to="/stats" name="Tài khoản" icon="ti-user" />
         <sidebar-link
-          to="human-resoure-management"
+          to="human-resource-management"
           name="Quản lý nhân viên"
           icon="ti-panel"
         />
