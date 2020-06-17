@@ -7,7 +7,6 @@
             <fg-input
               type="text"
               label="Quyền"
-              disabled
               placeholder="Admin"
               v-model="user.company"
             >
@@ -120,6 +119,7 @@
               </textarea>
             </div>
           </div>
+          <drop-down></drop-down>
         </div> -->
         <div class="text-center">
           <p-button type="info" round @click.native.prevent="updateProfile">
@@ -145,9 +145,20 @@ export default {
         city: "Melbourne",
         postalCode: "",
         aboutMe: `We must accept finite disappointment, but hold on to infinite hope.`
-      }
+      },
+      data: {}
     };
   },
+  // async mounted() {
+  //   const res = await this.$axios.get("/users/login");
+  //   const userData = res.data.data.map(data => {
+  //     return {
+  //       fullName: data.user.fullName,
+  //       ...data
+  //     };
+  //   });
+  //   this.data = userData;
+  // },
   methods: {
     updateProfile() {
       alert("Your data: " + JSON.stringify(this.user));

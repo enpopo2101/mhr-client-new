@@ -2,12 +2,12 @@
   <div class="container">
     <div class="filter-panel">
       <div class="row">
-        <div class="col-md d-flex">
-          <label>Họ và tên</label>
+        <div class="col-md d-flex align-items-center">
+          <label style="width: 100px !important">Họ và tên</label>
           <input type="text" class="form-control" />
         </div>
-        <div class="col-md d-flex">
-          <label>Địa điểm</label>
+        <div class="col-md d-flex align-items-center">
+          <label style="width: 100px !important">Địa điểm</label>
           <input type="text" class="form-control" />
         </div>
       </div>
@@ -58,21 +58,21 @@
       <div slot="action-slot" slot-scope="props">
         <button
           class="btn btn-primary"
-          v-on:click="showModalViewDetailWorkCalendar"
+          v-on:click="showModalViewDetailWorkCalendar(props.rowData.index - 1)"
         >
-          Chi tiết
+          <i class="far fa-eye"></i>
         </button>
         <button
           class="btn btn-success"
-          v-on:click="showModalUpdateWorkCalendar"
+          v-on:click="showModalUpdateWorkCalendar(props.rowData.index - 1)"
         >
-          Sửa
+          <i class="fas fa-edit"></i>
         </button>
         <button
           class="btn btn-danger"
-          v-on:click="handleCheckbox(props.rowData.index)"
+          v-on:click="deleteWorkCalendar(props.rowData.index - 1)"
         >
-          Xoá
+          <i class="far fa-trash-alt"></i>
         </button>
       </div>
     </vuetable>
@@ -105,7 +105,7 @@
                 >Mã nhân viên</label
               >
               <div class="controls col-md-8">
-                <input class="form-control" required v-model="body._id" />
+                <input class="form-control" required v-model="selected._id" />
               </div>
             </div>
             <user-picker
@@ -115,7 +115,7 @@
             <div class="form-group row">
               <label for="title" class="col-md-3 col-form-label">Tiêu đề</label>
               <div class="controls col-md-8">
-                <input class="form-control" required v-model="body.title" />
+                <input class="form-control" required v-model="selected.title" />
               </div>
             </div>
             <div class="form-group row">
@@ -123,10 +123,7 @@
                 >Địa điểm</label
               >
               <div class="controls col-md-8">
-                <select class="custom-select" v-model="body.type">
-                  <option value="award">Khen thưởng</option>
-                  <option value="penalty">Kỉ luật</option>
-                </select>
+                <input class="form-control" required v-model="selected.room" />
               </div>
             </div>
             <div
@@ -135,18 +132,26 @@
             >
               <div class="d-flex justify-content-around align-items-center">
                 <label style="width: 100px !important">Bắt đầu</label>
-                <input type="time" class="form-control" />
+                <input
+                  type="time"
+                  v-model="selected.startDate"
+                  class="form-control"
+                />
               </div>
               <div class="d-flex justify-content-around align-items-center">
                 <label style="width: 100px !important">Kết thúc</label>
-                <input type="time" class="form-control" />
+                <input
+                  type="time"
+                  v-model="selected.endDate"
+                  class="form-control"
+                />
               </div>
             </div>
             <div class="form-group row">
               <label for="title" class="col-md-3 col-form-label">Ngày</label>
               <div class="controls col-md-8">
                 <date-picker
-                  v-model="body.decisionDate"
+                  v-model="selected.date"
                   input-class="form-control"
                 ></date-picker>
               </div>
@@ -265,6 +270,8 @@
       </div>
     </modal>
     <!-- modal update end -->
+
+    <!-- modal view detail work calendar -->
     <modal
       name="viewDetailWorkCalendar"
       :clickToClose="true"
@@ -272,7 +279,7 @@
       :max-width="740"
       :pivotY="0.2"
       width="60%"
-      height="90% auto"
+      height="90%"
     >
       <div class="container">
         <div class="row d-flex justify-content-between align-items-baseline">
@@ -359,7 +366,6 @@
                   disabled
                   required
                   v-model="body.title"
-                  placeholder="yyyy-mm-dd"
                 />
               </div>
             </div>
@@ -367,8 +373,6 @@
         </div>
       </div>
     </modal>
-    <!-- modal view detail work calendar -->
-
     <!-- modal view detail work calendar end -->
   </div>
 </template>
@@ -390,14 +394,21 @@ export default {
         { name: "index", title: "STT", width: "5%" },
         { name: "checkbox-slot", title: "Select", width: "5%" },
         { name: "action-slot", title: "Tác vụ", width: "30%" },
-        { name: "_id", title: "Mã người dùng", width: "10%" },
         { name: "fullName", title: "Họ và tên", width: "15%" },
         { name: "fullName", title: "Địa điểm", width: "15%" },
         { name: "title", title: "Tiêu đề", width: "30%" }
       ],
       body: {},
       data: [],
-      user: null
+      user: null,
+      selected: {
+        _id: "",
+        startDate: "",
+        endDate: "",
+        title: "",
+        fullName: "",
+        room: ""
+      }
     };
   },
   watch: {
@@ -406,7 +417,8 @@ export default {
     }
   },
   async mounted() {
-    const res = await this.$axios.get("/award-penalties");
+    this.selected = {};
+    const res = await this.$axios.get("/work-calendars");
     const processData = res.data.data.map((data, index) => {
       return {
         index: index + 1,
@@ -415,6 +427,7 @@ export default {
       };
     });
     this.data = processData;
+    // console.log(processData);
   },
 
   methods: {
@@ -422,21 +435,27 @@ export default {
       this.$modal.show("createNewWorkCalendar", {
         width: "500px",
         maxWidth: "1000px",
-        minWidth: "300px"
+        minWidth: "300px",
+        props: ["selected"]
       });
+      // console.log(this.data);
     },
-    showModalUpdateWorkCalendar() {
+    showModalUpdateWorkCalendar(index) {
+      this.selected = this.data[index];
       this.$modal.show("updateWorkCalendar", {
         width: "500px",
         maxWidth: "1000px",
-        minWidth: "300px"
+        minWidth: "300px",
+        props: ["body"]
       });
     },
-    showModalViewDetailWorkCalendar() {
+    showModalViewDetailWorkCalendar(index) {
+      this.selected = this.data[index];
       this.$modal.show("viewDetailWorkCalendar", {
         width: "500px",
         maxWidth: "1000px",
-        minWidth: "300px"
+        minWidth: "300px",
+        props: ["selected"]
       });
     },
     getUserValue(user) {
@@ -444,7 +463,20 @@ export default {
     },
     async submit(e) {
       try {
-        const res = await this.$axios.post("/award-penalties", {
+        const startDateSplit = this.selected.startDate.split(":");
+        const endDateSplit = this.selected.endDate.split(":");
+        // console.log(this.selected.startDate.split(":"));
+        this.selected.startDate = moment(this.selected.date)
+          .set("hour", startDateSplit[0])
+          .set("minute", startDateSplit[1])
+          .toDate();
+        this.selected.endDate = moment(this.selected.date)
+          .set("hour", endDateSplit[0])
+          .set("minute", endDateSplit[1])
+          .toDate();
+        // console.log(this.selected.startDate);
+
+        const res = await this.$axios.post("/work-calendars", {
           ...this.body,
           user: this.user._id
         });
@@ -456,7 +488,9 @@ export default {
           verticalAlign: "top",
           type: "success"
         });
+        // console.log(this.selected);
       } catch (error) {
+        console.log(error);
         this.$notify({
           title: "Tạo mới thất bại",
           horizontalAlign: "right",

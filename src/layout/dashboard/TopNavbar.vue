@@ -15,7 +15,7 @@
       </button>
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
+          <li class="nav-item" @click="showProfile">
             <a href="#" class="nav-link">
               <img
                 class="avatar border-white"
@@ -94,6 +94,9 @@ export default {
     },
     hideSidebar() {
       this.$sidebar.displaySidebar(false);
+    },
+    showProfile() {
+      this.$router.push("/stats");
     }
   }
 };

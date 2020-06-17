@@ -13,7 +13,9 @@ import TableList from "@/pages/TableList.vue";
 import Login from "@/pages/Login.vue";
 import AwardPenalty from "@/pages/AwardPenalty.vue";
 import Calendar from "@/pages/Calendar.vue";
-import HumanResourceManagement from "@/pages/HumanResourceManagement.vue";
+import HumanResourceManager from "@/pages/HumanResourceManager.vue";
+import LaborContract from "@/pages/LaborContract.vue";
+import DepartmentManager from "@/pages/DepartmentManager.vue"
 
 const routes = [
   { path: "/login", component: Login, name: "Login" },
@@ -30,9 +32,9 @@ const routes = [
         meta: { requiresAuth: true }
       },
       {
-        path: "human-resource-management",
+        path: "human-resource-manager",
         name: "Quản lí nhân viên",
-        component: HumanResourceManagement,
+        component: HumanResourceManager,
         meta: { requiresAuth: true }
       },
       {
@@ -45,6 +47,12 @@ const routes = [
         path: "calendar",
         name: "Lịch làm việc",
         component: Calendar,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: "labor-contract",
+        name: "Quản lý hợp đồng",
+        component: LaborContract,
         meta: { requiresAuth: true }
       },
       {
@@ -72,9 +80,9 @@ const routes = [
         meta: { requiresAuth: true }
       },
       {
-        path: "typography",
-        name: "typography",
-        component: Typography
+        path: "department-manager",
+        name: "Quản lý phòng làm việc",
+        component: DepartmentManager
       },
       {
         path: "table-list",
