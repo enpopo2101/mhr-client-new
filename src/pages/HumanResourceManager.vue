@@ -7,7 +7,7 @@
           <input type="text" class="form-control" />
         </div>
         <div class="col-md d-flex align-items-center">
-          <label style="width: 80px !important">Chức vụ</label>
+          <label style="width: 120px !important">Số điện thoại</label>
           <input type="text" class="form-control" />
         </div>
       </div>
@@ -25,7 +25,7 @@
         </select>
       </div>
       <div>
-        <h5><b>Danh sách nhân viên khen thưởng kỉ luật</b></h5>
+        <h5><b>Danh sách nhân viên</b></h5>
       </div>
       <div class="d-flex justify-content-start align-items-center">
         <button class="btn btn-danger" style="width: 100px !important">
@@ -34,7 +34,7 @@
         </button>
         <button
           class="btn btn-primary"
-          v-on:click="showModalCreateAP"
+          v-on:click="showModalCreateNewPersonnel"
           style="width: 140px !important"
         >
           <i class="ti-plus" style="margin-right:4px"></i> Thêm mới
@@ -58,19 +58,16 @@
       <div slot="action-slot" slot-scope="props">
         <button
           class="btn btn-primary"
-          v-on:click="showModalViewDetailAP(props.rowData.index - 1)"
+          v-on:click="showModalViewDetailPersonnel"
         >
           <i class="far fa-eye"></i>
         </button>
-        <button
-          class="btn btn-success"
-          v-on:click="showModalUpdateAP(props.rowData.index - 1)"
-        >
+        <button class="btn btn-success" v-on:click="showModalUpdatePersonnel">
           <i class="fas fa-edit"></i>
         </button>
         <button
           class="btn btn-danger"
-          v-on:click="deleteAP(props.rowData.index - 1)"
+          v-on:click="handleCheckbox(props.rowData.index)"
         >
           <i class="far fa-trash-alt"></i>
         </button>
@@ -78,25 +75,36 @@
     </vuetable>
     <!-- modal create -->
     <modal
-      name="createNewAP"
+      name="createNewPersonnel"
       :clickToClose="true"
       :min-width="320"
       :max-width="740"
       :pivotY="0.2"
       width="60%"
-      height="80%"
+      height="90%"
     >
       <div class="container">
         <div class="row d-flex justify-content-between align-items-baseline">
           <p style="margin-left: 10px; font-size: 20px">
-            <b>Thêm mới nhân viên kỉ luật khen thưởng</b>
+            <b>Thêm nhân viên</b>
           </p>
-          <button class="btn btn-default" v-on:click="hideModalCreateAP">
+          <button
+            class="btn btn-default"
+            v-on:click="hideModalCreateNewPersonnel"
+          >
             <i class="ti-close"></i>
           </button>
         </div>
         <div class="row container">
           <form class="form-horizontal col-md-12" @submit="submit">
+            <div class="form-group row">
+              <label for="title" class="col-md-3 col-form-label"
+                >Mã nhân viên</label
+              >
+              <div class="controls col-md-8">
+                <input class="form-control" required v-model="body._id" />
+              </div>
+            </div>
             <user-picker
               v-on:get-user-value="getUserValue"
               label="Họ và tên"
@@ -108,7 +116,9 @@
               </div>
             </div>
             <div class="form-group row">
-              <label for="title" class="col-md-3 col-form-label">Loại</label>
+              <label for="title" class="col-md-3 col-form-label"
+                >Địa điểm</label
+              >
               <div class="controls col-md-8">
                 <select class="custom-select" v-model="body.type">
                   <option value="award">Khen thưởng</option>
@@ -116,23 +126,26 @@
                 </select>
               </div>
             </div>
+            <div
+              class="d-flex justify-content-around"
+              style="padding: 0 0 10px 0"
+            >
+              <div class="d-flex justify-content-around align-items-center">
+                <label style="width: 100px !important">Bắt đầu</label>
+                <input type="time" class="form-control" />
+              </div>
+              <div class="d-flex justify-content-around align-items-center">
+                <label style="width: 100px !important">Kết thúc</label>
+                <input type="time" class="form-control" />
+              </div>
+            </div>
             <div class="form-group row">
-              <label for="title" class="col-md-3 col-form-label"
-                >Ngày ra quyết định</label
-              >
+              <label for="title" class="col-md-3 col-form-label">Ngày</label>
               <div class="controls col-md-8">
                 <date-picker
                   v-model="body.decisionDate"
                   input-class="form-control"
                 ></date-picker>
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="title" class="col-md-3 col-form-label"
-                >Nội dung</label
-              >
-              <div class="controls col-md-8">
-                <textarea v-model="body.content" class="form-control" />
               </div>
             </div>
           </form>
@@ -148,13 +161,7 @@
             >
               Tạo
             </button>
-            <button
-              style="width: 6em"
-              class="btn btn-danger"
-              @click="hideModalCreateAP"
-            >
-              Huỷ
-            </button>
+            <button style="width: 6em" class="btn btn-danger">Huỷ</button>
           </div>
         </div>
       </div>
@@ -163,20 +170,20 @@
 
     <!-- modal update -->
     <modal
-      name="updateAP"
+      name="updatePersonnel"
       :clickToClose="true"
       :min-width="320"
       :max-width="740"
       :pivotY="0.2"
       width="60%"
-      height="80%"
+      height="90%"
     >
       <div class="container">
         <div class="row d-flex justify-content-between align-items-baseline">
           <p style="margin-left: 10px; font-size: 20px">
-            <b>Sửa kỉ luật khen thưởng</b>
+            <b>Sửa hồ sơ nhân viên</b>
           </p>
-          <button class="btn btn-default" v-on:click="hideModalUpdateAP">
+          <button class="btn btn-default" v-on:click="hideModalUpdatePersonnel">
             <i class="ti-close"></i>
           </button>
         </div>
@@ -184,53 +191,53 @@
           <form class="form-horizontal col-md-12" @submit="submit">
             <div class="form-group row">
               <label for="title" class="col-md-3 col-form-label"
-                >Họ và tên</label
+                >Mã nhân viên</label
               >
               <div class="controls col-md-8">
-                <input
-                  class="form-control"
-                  required
-                  v-model="selected.fullName"
-                />
+                <input class="form-control" required v-model="body.title" />
               </div>
             </div>
-            <!-- <user-picker
+            <user-picker
               v-on:get-user-value="getUserValue"
               label="Họ và tên"
-              v-model="se"
-            ></user-picker> -->
+            ></user-picker>
             <div class="form-group row">
               <label for="title" class="col-md-3 col-form-label">Tiêu đề</label>
               <div class="controls col-md-8">
-                <input class="form-control" required v-model="selected.title" />
+                <input class="form-control" required v-model="body.title" />
               </div>
             </div>
             <div class="form-group row">
-              <label for="title" class="col-md-3 col-form-label">Loại</label>
+              <label for="title" class="col-md-3 col-form-label"
+                >Địa điểm</label
+              >
               <div class="controls col-md-8">
-                <select class="custom-select" v-model="selected.type">
+                <select class="custom-select" v-model="body.type">
                   <option value="award">Khen thưởng</option>
                   <option value="penalty">Kỉ luật</option>
                 </select>
               </div>
             </div>
-            <div class="form-group row">
-              <label for="title" class="col-md-3 col-form-label"
-                >Ngày ra quyết định</label
-              >
-              <div class="controls col-md-8">
-                <date-picker
-                  v-model="selected.decisionDate"
-                  input-class="form-control"
-                ></date-picker>
+            <div
+              class="d-flex justify-content-around"
+              style="padding: 0 0 10px 0"
+            >
+              <div class="d-flex justify-content-around align-items-center">
+                <label style="width: 100px !important">Bắt đầu</label>
+                <input type="time" class="form-control" />
+              </div>
+              <div class="d-flex justify-content-around align-items-center">
+                <label style="width: 100px !important">Kết thúc</label>
+                <input type="time" class="form-control" />
               </div>
             </div>
             <div class="form-group row">
-              <label for="title" class="col-md-3 col-form-label"
-                >Nội dung</label
-              >
+              <label for="title" class="col-md-3 col-form-label">Ngày</label>
               <div class="controls col-md-8">
-                <textarea v-model="selected.content" class="form-control" />
+                <date-picker
+                  v-model="body.decisionDate"
+                  input-class="form-control"
+                ></date-picker>
               </div>
             </div>
           </form>
@@ -240,46 +247,56 @@
             <button
               style="width: 6em"
               type="submit"
-              @submit="update"
+              @submit="submit"
               class="btn btn-success"
-              @click="update"
+              @click="submit"
             >
-              Sửa
+              Sửa lịch
             </button>
-            <button
-              style="width: 6em"
-              class="btn btn-danger"
-              @click="hideModalUpdateAP"
-            >
-              Huỷ
-            </button>
+            <button style="width: 6em" class="btn btn-danger">Huỷ</button>
           </div>
         </div>
       </div>
     </modal>
     <!-- modal update end -->
 
-    <!-- modal view detail AP -->
+    <!-- modal view detail personnel -->
     <modal
-      name="viewDetailAP"
+      name="viewDetailPersonnel"
       :clickToClose="true"
       :min-width="320"
       :max-width="740"
       :pivotY="0.2"
       width="60%"
-      height="80%"
+      height="90%"
     >
       <div class="container">
         <div class="row d-flex justify-content-between align-items-baseline">
           <p style="margin-left: 10px; font-size: 20px">
-            <b>Chi tiết kỉ luật khen thưởng</b>
+            <b>Chi tiết nhân viên</b>
           </p>
-          <button class="btn btn-default" v-on:click="hideModalViewDetailAP">
+          <button
+            class="btn btn-default"
+            v-on:click="hideModalViewDetailPersonnel"
+          >
             <i class="ti-close"></i>
           </button>
         </div>
         <div class="row container">
-          <form class="form-horizontal col-md-12">
+          <form class="form-horizontal col-md-12" @submit="submit">
+            <div class="form-group row">
+              <label for="title" class="col-md-3 col-form-label"
+                >Mã nhân viên</label
+              >
+              <div class="controls col-md-8">
+                <input
+                  class="form-control"
+                  disabled
+                  required
+                  v-model="body.title"
+                />
+              </div>
+            </div>
             <div class="form-group row">
               <label for="title" class="col-md-3 col-form-label"
                 >Họ và tên</label
@@ -287,9 +304,9 @@
               <div class="controls col-md-8">
                 <input
                   class="form-control"
-                  required
                   disabled
-                  v-model="selected.fullName"
+                  required
+                  v-model="body.title"
                 />
               </div>
             </div>
@@ -298,44 +315,46 @@
               <div class="controls col-md-8">
                 <input
                   class="form-control"
-                  required
                   disabled
-                  v-model="selected.title"
+                  required
+                  v-model="body.title"
                 />
               </div>
             </div>
             <div class="form-group row">
-              <label for="title" class="col-md-3 col-form-label">Loại</label>
+              <label for="title" class="col-md-3 col-form-label"
+                >Địa điểm</label
+              >
               <div class="controls col-md-8">
                 <input
                   class="form-control"
-                  required
                   disabled
-                  v-model="selected.type"
+                  required
+                  v-model="body.title"
                 />
               </div>
             </div>
-            <div class="form-group row">
-              <label for="title" class="col-md-3 col-form-label"
-                >Ngày ra quyết định</label
-              >
-              <div class="controls col-md-8">
-                <date-picker
-                  v-model="selected.decisionDate"
-                  input-class="form-control"
-                  disabled
-                ></date-picker>
+            <div
+              class="d-flex justify-content-around"
+              style="padding: 0 0 10px 0"
+            >
+              <div class="d-flex justify-content-around align-items-center">
+                <label style="width: 100px !important">Bắt đầu</label>
+                <input type="time" disabled class="form-control" />
+              </div>
+              <div class="d-flex justify-content-around align-items-center">
+                <label style="width: 100px !important">Kết thúc</label>
+                <input type="time" disabled class="form-control" />
               </div>
             </div>
             <div class="form-group row">
-              <label for="title" class="col-md-3 col-form-label"
-                >Nội dung</label
-              >
+              <label for="title" class="col-md-3 col-form-label">Ngày</label>
               <div class="controls col-md-8">
-                <textarea
-                  disabled
-                  v-model="selected.content"
+                <input
                   class="form-control"
+                  disabled
+                  required
+                  v-model="body.title"
                 />
               </div>
             </div>
@@ -343,7 +362,7 @@
         </div>
       </div>
     </modal>
-    <!-- modal view detail AP end -->
+    <!-- modal view detail personnel end -->
   </div>
 </template>
 <script>
@@ -363,29 +382,13 @@ export default {
       fields: [
         { name: "index", title: "STT", width: "5%" },
         { name: "checkbox-slot", title: "Select", width: "5%" },
-        { name: "action-slot", title: "Tác vụ", width: "15%" },
-        { name: "fullName", title: "Họ và tên", width: "20%" },
-        {
-          name: "type",
-          title: "Loại",
-          width: "10%",
-          formatter(value) {
-            return value === "award" ? "Khen thưởng" : "Kỉ luật";
-          }
-        },
-        { name: "title", title: "Tiêu đề", width: "30%" }
+        { name: "action-slot", title: "Tác vụ", width: "20%" },
+        { name: "fullName", title: "Họ và tên", width: "30%" },
+        { name: "userName", title: "Tên đăng nhập", width: "30%" }
       ],
       body: {},
       data: [],
-      user: null,
-      selected: {
-        _id: "",
-        fullName: "",
-        type: "",
-        content: "",
-        decisionDate: "",
-        title: ""
-      }
+      user: null
     };
   },
   watch: {
@@ -406,33 +409,26 @@ export default {
   },
 
   methods: {
-    showModalCreateAP() {
-      this.$modal.show("createNewAP", {
+    showModalCreateNewPersonnel() {
+      this.$modal.show("createNewPersonnel", {
         width: "500px",
         maxWidth: "1000px",
         minWidth: "300px"
       });
-      // console.log(this.data);
     },
-    showModalUpdateAP(index) {
-      this.selected = this.data[index];
-      // console.log(this.selected);
-      this.$modal.show("updateAP", {
+    showModalUpdatePersonnel() {
+      this.$modal.show("updatePersonnel", {
         width: "500px",
         maxWidth: "1000px",
-        minWidth: "300px",
-        props: ["selected"]
+        minWidth: "300px"
       });
     },
-    showModalViewDetailAP(index) {
-      this.selected = this.data[index];
-      this.$modal.show("viewDetailAP", {
+    showModalViewDetailPersonnel() {
+      this.$modal.show("viewDetailPersonnel", {
         width: "500px",
         maxWidth: "1000px",
-        minWidth: "300px",
-        props: ["selected"]
+        minWidth: "300px"
       });
-      // console.log(this.data);
     },
     getUserValue(user) {
       this.user = user;
@@ -444,15 +440,13 @@ export default {
           user: this.user._id
         });
         e.preventDefault();
-        // this.$refs.vuetable.refresh();
+        this.$refs.vuetable.refresh();
         this.$notify({
           title: "Tạo mới thành công",
           horizontalAlign: "right",
           verticalAlign: "top",
           type: "success"
         });
-        this.$router.go();
-        this.$modal.hide("createNewAP");
       } catch (error) {
         this.$notify({
           title: "Tạo mới thất bại",
@@ -462,63 +456,14 @@ export default {
         });
       }
     },
-    async update(e) {
-      try {
-        const res = await this.$axios.put(
-          `/award-penalties/${this.selected._id}`,
-          {
-            ...this.selected
-          }
-        );
-        e.preventDefault();
-        // this.$refs.vuetable.refresh();
-        this.$router.go();
-        this.$notify({
-          title: "Sửa thành công",
-          horizontalAlign: "right",
-          verticalAlign: "top",
-          type: "success"
-        });
-        this.$modal.hide("updateAP");
-      } catch (error) {
-        this.$notify({
-          title: "Sửa thất bại",
-          horizontalAlign: "right",
-          verticalAlign: "top",
-          type: "danger"
-        });
-      }
+    hideModalCreateNewPersonnel() {
+      this.$modal.hide("createNewPersonnel");
     },
-    async deleteAP(index) {
-      this.selected = this.data[index];
-      try {
-        const res = await this.$axios.delete(
-          `/award-penalties/${this.selected._id}`
-        );
-        this.$notify({
-          title: "Xóa thành công",
-          titlntalAlign: "right",
-          verticalAlign: "top",
-          type: "success"
-        });
-        this.$router.go();
-      } catch (error) {
-        this.$notify({
-          title: "Xóa thất bại",
-          horizontalAlign: "right",
-          verticalAlign: "top",
-          type: "danger"
-        });
-      }
+    hideModalUpdatePersonnel() {
+      this.$modal.hide("updatePersonnel");
     },
-    hideModalCreateAP() {
-      this.$modal.hide("createNewAP");
-    },
-    hideModalUpdateAP() {
-      this.$modal.hide("updateAP");
-    },
-    hideModalViewDetailAP() {
-      this.$modal.hide("viewDetailAP");
+    hideModalViewDetailPersonnel() {
+      this.$modal.hide("viewDetailPersonnel");
     }
   }
 };

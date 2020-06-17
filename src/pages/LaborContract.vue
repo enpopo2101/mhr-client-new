@@ -3,11 +3,11 @@
     <div class="filter-panel">
       <div class="row">
         <div class="col-md d-flex align-items-center">
-          <label style="width: 100px !important">Họ và tên alo</label>
+          <label style="width: 80px !important">Họ và tên</label>
           <input type="text" class="form-control" />
         </div>
         <div class="col-md d-flex align-items-center">
-          <label style="width: 130px !important">Số điện thoại</label>
+          <label style="width: 130px !important">Loại hợp đồng</label>
           <input type="text" class="form-control" />
         </div>
       </div>
@@ -25,7 +25,20 @@
         </select>
       </div>
       <div>
-        <h5><b>Danh sách nhân viên</b></h5>
+        <h5><b>Danh sách hợp đồng</b></h5>
+      </div>
+      <div class="d-flex justify-content-start align-items-center">
+        <button class="btn btn-danger" style="width: 100px !important">
+          <i class="fas fa-minus" style="margin-right:4px"></i>
+          Xóa
+        </button>
+        <button
+          class="btn btn-primary"
+          v-on:click="showModalCreateNewLaborContract"
+          style="width: 140px !important"
+        >
+          <i class="ti-plus" style="margin-right:4px"></i> Thêm mới
+        </button>
       </div>
     </div>
 
@@ -42,25 +55,226 @@
           v-on:change="handleCheckbox(props.rowData.index)"
         />
       </div>
-      <div slot="action-slot">
+      <div slot="action-slot" slot-scope="props">
         <button
           class="btn btn-primary"
-          v-on:click="showModalViewDetailWorkCalendar"
+          v-on:click="showModalViewDetailLaborContract(props.rowData.index - 1)"
         >
-          Chi tiết
+          <i class="far fa-eye"></i>
+        </button>
+        <button
+          class="btn btn-success"
+          v-on:click="showModalUpdateLaborContract(props.rowData.index - 1)"
+        >
+          <i class="fas fa-edit"></i>
+        </button>
+        <button
+          class="btn btn-danger"
+          v-on:click="handleCheckbox(props.rowData.index - 1)"
+        >
+          <i class="far fa-trash-alt"></i>
         </button>
       </div>
     </vuetable>
-
-    <!-- modal view detail work calendar -->
+    <!-- modal create -->
     <modal
-      name="viewDetailWorkCalendar"
+      name="createNewLaborContract"
       :clickToClose="true"
       :min-width="320"
       :max-width="740"
       :pivotY="0.2"
       width="60%"
-      height="90% auto"
+      height="90%"
+    >
+      <div class="container">
+        <div class="row d-flex justify-content-between align-items-baseline">
+          <p style="margin-left: 10px; font-size: 20px">
+            <b>Thêm lịch làm việc</b>
+          </p>
+          <button
+            class="btn btn-default"
+            v-on:click="hideModalCreateNewLaborContract"
+          >
+            <i class="ti-close"></i>
+          </button>
+        </div>
+        <div class="row container">
+          <form class="form-horizontal col-md-12" @submit="submit">
+            <div class="form-group row">
+              <label for="title" class="col-md-3 col-form-label"
+                >Mã nhân viên</label
+              >
+              <div class="controls col-md-8">
+                <input class="form-control" required v-model="body._id" />
+              </div>
+            </div>
+            <user-picker
+              v-on:get-user-value="getUserValue"
+              label="Họ và tên"
+            ></user-picker>
+            <div class="form-group row">
+              <label for="title" class="col-md-3 col-form-label">Tiêu đề</label>
+              <div class="controls col-md-8">
+                <input class="form-control" required v-model="body.title" />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="title" class="col-md-3 col-form-label"
+                >Địa điểm</label
+              >
+              <div class="controls col-md-8">
+                <select class="custom-select" v-model="body.type">
+                  <option value="award">Khen thưởng</option>
+                  <option value="penalty">Kỉ luật</option>
+                </select>
+              </div>
+            </div>
+            <div
+              class="d-flex justify-content-around"
+              style="padding: 0 0 10px 0"
+            >
+              <div class="d-flex justify-content-around align-items-center">
+                <label style="width: 100px !important">Bắt đầu</label>
+                <input type="time" class="form-control" />
+              </div>
+              <div class="d-flex justify-content-around align-items-center">
+                <label style="width: 100px !important">Kết thúc</label>
+                <input type="time" class="form-control" />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="title" class="col-md-3 col-form-label">Ngày</label>
+              <div class="controls col-md-8">
+                <date-picker
+                  v-model="body.decisionDate"
+                  input-class="form-control"
+                ></date-picker>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="row col-md d-flex justify-content-center">
+          <div style="width: 200px !important">
+            <button
+              style="width: 6em"
+              type="submit"
+              @submit="submit"
+              class="btn btn-success"
+              @click="submit"
+            >
+              Tạo
+            </button>
+            <button style="width: 6em" class="btn btn-danger">Huỷ</button>
+          </div>
+        </div>
+      </div>
+    </modal>
+    <!-- modal create end -->
+
+    <!-- modal update -->
+    <modal
+      name="updateLaborContract"
+      :clickToClose="true"
+      :min-width="320"
+      :max-width="740"
+      :pivotY="0.2"
+      width="60%"
+      height="90%"
+    >
+      <div class="container">
+        <div class="row d-flex justify-content-between align-items-baseline">
+          <p style="margin-left: 10px; font-size: 20px">
+            <b>Sửa lịch làm việc</b>
+          </p>
+          <button
+            class="btn btn-default"
+            v-on:click="hideModalUpdateLaborContract"
+          >
+            <i class="ti-close"></i>
+          </button>
+        </div>
+        <div class="row container">
+          <form class="form-horizontal col-md-12" @submit="submit">
+            <div class="form-group row">
+              <label for="title" class="col-md-3 col-form-label"
+                >Mã nhân viên</label
+              >
+              <div class="controls col-md-8">
+                <input class="form-control" required v-model="body.title" />
+              </div>
+            </div>
+            <user-picker
+              v-on:get-user-value="getUserValue"
+              label="Họ và tên"
+            ></user-picker>
+            <div class="form-group row">
+              <label for="title" class="col-md-3 col-form-label">Tiêu đề</label>
+              <div class="controls col-md-8">
+                <input class="form-control" required v-model="body.title" />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="title" class="col-md-3 col-form-label"
+                >Địa điểm</label
+              >
+              <div class="controls col-md-8">
+                <select class="custom-select" v-model="body.type">
+                  <option value="award">Khen thưởng</option>
+                  <option value="penalty">Kỉ luật</option>
+                </select>
+              </div>
+            </div>
+            <div
+              class="d-flex justify-content-around"
+              style="padding: 0 0 10px 0"
+            >
+              <div class="d-flex justify-content-around align-items-center">
+                <label style="width: 100px !important">Bắt đầu</label>
+                <input type="time" class="form-control" />
+              </div>
+              <div class="d-flex justify-content-around align-items-center">
+                <label style="width: 100px !important">Kết thúc</label>
+                <input type="time" class="form-control" />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="title" class="col-md-3 col-form-label">Ngày</label>
+              <div class="controls col-md-8">
+                <date-picker
+                  v-model="body.decisionDate"
+                  input-class="form-control"
+                ></date-picker>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="row col-md d-flex justify-content-center">
+          <div style="width: 200px !important">
+            <button
+              style="width: 6em"
+              type="submit"
+              @submit="submit"
+              class="btn btn-success"
+              @click="submit"
+            >
+              Sửa lịch
+            </button>
+            <button style="width: 6em" class="btn btn-danger">Huỷ</button>
+          </div>
+        </div>
+      </div>
+    </modal>
+    <!-- modal update end -->
+
+    <!-- modal view detail -->
+    <modal
+      name="viewDetailLaborContract"
+      :clickToClose="true"
+      :min-width="320"
+      :max-width="740"
+      :pivotY="0.2"
+      width="60%"
+      height="90%"
     >
       <div class="container">
         <div class="row d-flex justify-content-between align-items-baseline">
@@ -69,7 +283,7 @@
           </p>
           <button
             class="btn btn-default"
-            v-on:click="hideModalViewDetailWorkCalendar"
+            v-on:click="hideModalViewDetailLaborContract"
           >
             <i class="ti-close"></i>
           </button>
@@ -147,7 +361,6 @@
                   disabled
                   required
                   v-model="body.title"
-                  placeholder="yyyy-mm-dd"
                 />
               </div>
             </div>
@@ -155,7 +368,7 @@
         </div>
       </div>
     </modal>
-    <!-- modal view detail work calendar end -->
+    <!-- modal view detail end -->
   </div>
 </template>
 <script>
@@ -175,11 +388,9 @@ export default {
       fields: [
         { name: "index", title: "STT", width: "5%" },
         { name: "checkbox-slot", title: "Select", width: "5%" },
-        { name: "action-slot", title: "Tác vụ", width: "15%" },
-        { name: "_id", title: "Mã người dùng", width: "10%" },
-        { name: "fullName", title: "Họ và tên", width: "15%" },
-        { name: "fullName", title: "Địa điểm", width: "15%" },
-        { name: "title", title: "Tiêu đề", width: "30%" }
+        { name: "action-slot", title: "Tác vụ", width: "20%" },
+        { name: "fullName", title: "Họ và tên", width: "30%" },
+        { name: "type", title: "Loại hợp đồng", width: "30%" }
       ],
       body: {},
       data: [],
@@ -192,7 +403,7 @@ export default {
     }
   },
   async mounted() {
-    const res = await this.$axios.get("/award-penalties");
+    const res = await this.$axios.get("/work-calendars");
     const processData = res.data.data.map((data, index) => {
       return {
         index: index + 1,
@@ -204,8 +415,23 @@ export default {
   },
 
   methods: {
-    showModalViewDetailWorkCalendar() {
-      this.$modal.show("viewDetailWorkCalendar", {
+    showModalCreateNewLaborContract() {
+      this.$modal.show("createNewLaborContract", {
+        width: "500px",
+        maxWidth: "1000px",
+        minWidth: "300px"
+      });
+      // console.log(this.data);
+    },
+    showModalUpdateLaborContract() {
+      this.$modal.show("updateLaborContract", {
+        width: "500px",
+        maxWidth: "1000px",
+        minWidth: "300px"
+      });
+    },
+    showModalViewDetailLaborContract() {
+      this.$modal.show("viewDetailLaborContract", {
         width: "500px",
         maxWidth: "1000px",
         minWidth: "300px"
@@ -216,7 +442,7 @@ export default {
     },
     async submit(e) {
       try {
-        const res = await this.$axios.post("/award-penalties", {
+        const res = await this.$axios.post("/work-calendars", {
           ...this.body,
           user: this.user._id
         });
@@ -237,8 +463,14 @@ export default {
         });
       }
     },
+    hideModalCreateNewLaborContract() {
+      this.$modal.hide("createNewLaborContract");
+    },
+    hideModalUpdateWorkCalendar() {
+      this.$modal.hide("updateLaborContract");
+    },
     hideModalViewDetailWorkCalendar() {
-      this.$modal.hide("viewDetailWorkCalendar");
+      this.$modal.hide("viewDetailLaborContract");
     }
   }
 };
