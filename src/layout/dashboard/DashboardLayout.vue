@@ -23,7 +23,7 @@
           icon="ti-view-list-alt"
         />
         <sidebar-link to="/icons" name="Icons" icon="ti-pencil-alt2" />
-        <sidebar-link to="/massmail" name="Gửi massmail" icon="ti-bell" />
+        <sidebar-link to="/mass-mail" name="Massmail" icon="ti-bell" />
       </template>
       <mobile-menu>
         <li class="nav-item">

@@ -14,6 +14,7 @@ import Login from "@/pages/Login.vue";
 import AwardPenalty from "@/pages/AwardPenalty.vue";
 import Calendar from "@/pages/Calendar.vue";
 import HumanResourceManagement from "@/pages/HumanResourceManagement.vue";
+import MassMail from "@/pages/MassMail.vue";
 
 const routes = [
   { path: "/login", component: Login, name: "Login" },
@@ -80,7 +81,12 @@ const routes = [
         path: "table-list",
         name: "table-list",
         component: TableList
-      }
+      },
+      {
+        path: "mass-mail",
+        name: "Massmail",
+        component: MassMail
+      },
     ]
   },
   { path: "*", component: NotFound }
