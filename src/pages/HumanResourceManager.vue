@@ -34,7 +34,7 @@
         </button>
         <button
           class="btn btn-primary"
-          v-on:click="showModalCreateNewPersonnel"
+          v-on:click="redirectToCreateUser"
           style="width: 140px !important"
         >
           <i class="ti-plus" style="margin-right:4px"></i> Thêm mới
@@ -380,9 +380,9 @@ export default {
       languages: lang,
       decisionDate: moment().toDate(),
       fields: [
-        { name: "index", title: "STT", width: "5%" },
-        { name: "checkbox-slot", title: "Select", width: "5%" },
         { name: "action-slot", title: "Tác vụ", width: "20%" },
+        { name: "checkbox-slot", title: "Select", width: "5%" },
+        { name: "index", title: "STT", width: "5%" },
         { name: "fullName", title: "Họ và tên", width: "30%" },
         { name: "userName", title: "Tên đăng nhập", width: "30%" }
       ],
@@ -409,12 +409,8 @@ export default {
   },
 
   methods: {
-    showModalCreateNewPersonnel() {
-      this.$modal.show("createNewPersonnel", {
-        width: "500px",
-        maxWidth: "1000px",
-        minWidth: "300px"
-      });
+    redirectToCreateUser() {
+      this.$router.push("/create-user");
     },
     showModalUpdatePersonnel() {
       this.$modal.show("updatePersonnel", {
