@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "http://mhr-test.ddns.net"
+  baseURL: "mhr-test.ddns.net"
 });
 
 instance.interceptors.request.use(function(config) {
