@@ -4,23 +4,27 @@
       <template slot="links">
         <sidebar-link to="/stats" name="Tài khoản" icon="ti-user" />
         <sidebar-link
-          to="human-resource-management"
+          to="human-resource-manager"
           name="Quản lý nhân viên"
-          icon="ti-panel"
+          icon="ti-id-badge"
         />
+        <sidebar-link to="/calendar" name="Lịch làm việc" icon="ti-calendar" />
         <sidebar-link
-          to="/calendar"
-          name="Lịch làm việc"
-          icon="ti-view-list-alt"
+          to="/department-manager"
+          name="Phòng ban"
+          icon="ti-flag-alt"
         />
-        <sidebar-link to="/typography" name="Phòng ban" icon="ti-text" />
-        <sidebar-link to="/icons" name="Chức vụ" icon="ti-pencil-alt2" />
-        <sidebar-link to="/maps" name="Quản lý hợp đồng" icon="ti-map" />
-        <sidebar-link to="/maps" name="Điều chuyển công tác" icon="ti-map" />
+        <sidebar-link to="/icons" name="Chức vụ" icon="ti-briefcase" />
+        <sidebar-link
+          to="/labor-contract"
+          name="Hợp đồng"
+          icon="ti-clipboard"
+        />
+        <sidebar-link to="/maps" name="Điều chuyển công tác" icon="ti-share" />
         <sidebar-link
           to="/award-penalty"
           name="Khen thưởng - Kỉ luật"
-          icon="ti-view-list-alt"
+          icon="ti-gift"
         />
         <sidebar-link to="/icons" name="Icons" icon="ti-pencil-alt2" />
         <sidebar-link to="/mass-mail" name="Massmail" icon="ti-bell" />
