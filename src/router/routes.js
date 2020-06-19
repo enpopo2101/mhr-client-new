@@ -17,6 +17,7 @@ import HumanResourceManager from "@/pages/HumanResourceManager.vue";
 import LaborContract from "@/pages/LaborContract.vue";
 import DepartmentManager from "@/pages/DepartmentManager.vue"
 import MassMail from "@/pages/MassMail.vue";
+import ChangeWorkplace from "@/pages/ChangeWorkplace.vue";
 
 const routes = [
   { path: "/login", component: Login, name: "Login" },
@@ -75,9 +76,9 @@ const routes = [
         meta: { requiresAuth: true }
       },
       {
-        path: "maps",
-        name: "maps",
-        component: Maps,
+        path: "change-workplace",
+        name: "Điều chuyển công tác",
+        component: ChangeWorkplace,
         meta: { requiresAuth: true }
       },
       {

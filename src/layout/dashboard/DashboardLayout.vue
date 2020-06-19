@@ -20,7 +20,7 @@
           name="Hợp đồng"
           icon="ti-clipboard"
         />
-        <sidebar-link to="/maps" name="Điều chuyển công tác" icon="ti-share" />
+        <sidebar-link to="/change-workplace" name="Điều chuyển công tác" icon="ti-share" />
         <sidebar-link
           to="/award-penalty"
           name="Khen thưởng - Kỉ luật"
