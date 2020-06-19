@@ -25,24 +25,7 @@
               <p style="margin: 0 0 0 5px">{{ getFullName() }}</p>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="ti-panel"></i>
-              <p>Thống kê</p>
-            </a>
-          </li>
-          <drop-down
-            class="nav-item"
-            title="5 Thông báo"
-            title-classes="nav-link"
-            icon="ti-bell"
-          >
-            <a class="dropdown-item" href="#">Notification 1</a>
-            <a class="dropdown-item" href="#">Notification 2</a>
-            <a class="dropdown-item" href="#">Notification 3</a>
-            <a class="dropdown-item" href="#">Notification 4</a>
-            <a class="dropdown-item" href="#">Another notification</a>
-          </drop-down>
+
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="ti-settings"></i>
