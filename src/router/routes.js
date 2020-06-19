@@ -15,8 +15,9 @@ import AwardPenalty from "@/pages/AwardPenalty.vue";
 import Calendar from "@/pages/Calendar.vue";
 import HumanResourceManager from "@/pages/HumanResourceManager.vue";
 import LaborContract from "@/pages/LaborContract.vue";
-import DepartmentManager from "@/pages/DepartmentManager.vue"
+import DepartmentManager from "@/pages/DepartmentManager.vue";
 import MassMail from "@/pages/MassMail.vue";
+import CreateUser from "../pages/CreateNewUser.vue";
 
 const routes = [
   { path: "/login", component: Login, name: "Login" },
@@ -36,6 +37,12 @@ const routes = [
         path: "human-resource-manager",
         name: "Quản lí nhân viên",
         component: HumanResourceManager,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: "create-user",
+        component: CreateUser,
+        name: "Tạo mới tài khoản",
         meta: { requiresAuth: true }
       },
       {
@@ -94,7 +101,7 @@ const routes = [
         path: "mass-mail",
         name: "Massmail",
         component: MassMail
-      },
+      }
     ]
   },
   { path: "*", component: NotFound }
