@@ -70,12 +70,13 @@
         </button>
         <button
           class="btn btn-danger"
-          v-on:click="deleteAP(props.rowData.index - 1)"
+          v-on:click="showModalConfirmDelete(props.rowData.index - 1)"
         >
           <i class="far fa-trash-alt"></i>
         </button>
       </div>
     </vuetable>
+
     <!-- modal create -->
     <modal
       name="createNewAP"
@@ -344,6 +345,17 @@
       </div>
     </modal>
     <!-- modal view detail AP end -->
+
+    <!-- modal confirm delete -->
+    <v-dialog
+      name="confirmDelete"
+      :clickToClose="true"
+      :pivotY="0.5"
+      :povotX="0.5"
+      width="20%"
+      height="22%"
+    />
+    <!-- modal confirm delete end -->
   </div>
 </template>
 <script>
@@ -412,11 +424,9 @@ export default {
         maxWidth: "1000px",
         minWidth: "300px"
       });
-      // console.log(this.data);
     },
     showModalUpdateAP(index) {
       this.selected = this.data[index];
-      // console.log(this.selected);
       this.$modal.show("updateAP", {
         width: "500px",
         maxWidth: "1000px",
@@ -432,7 +442,43 @@ export default {
         minWidth: "300px",
         props: ["selected"]
       });
-      // console.log(this.data);
+    },
+    showModalConfirmDelete(index) {
+      this.selected = this.data[index];
+      this.$modal.show("dialog", {
+        title: "Thông báo",
+        text:
+          "Hệ thống sẽ xóa hoàn toàn thành tích, khen thưởng, kỷ luật của người dùng. Bạn có chắc chắn xóa?",
+        buttons: [
+          {
+            title: "Đồng ý",
+            handler: () => {
+              try {
+                const res = this.$axios.delete(
+                  `/award-penalties/${this.selected._id}`
+                );
+                this.$notify({
+                  title: "Xóa thành công",
+                  titlntalAlign: "right",
+                  verticalAlign: "top",
+                  type: "success"
+                });
+                this.$router.go();
+              } catch (error) {
+                this.$notify({
+                  title: "Xóa thất bại",
+                  horizontalAlign: "right",
+                  verticalAlign: "top",
+                  type: "danger"
+                });
+              }
+            }
+          },
+          {
+            title: "Bỏ qua"
+          }
+        ]
+      });
     },
     getUserValue(user) {
       this.user = user;
@@ -483,28 +529,6 @@ export default {
       } catch (error) {
         this.$notify({
           title: "Sửa thất bại",
-          horizontalAlign: "right",
-          verticalAlign: "top",
-          type: "danger"
-        });
-      }
-    },
-    async deleteAP(index) {
-      this.selected = this.data[index];
-      try {
-        const res = await this.$axios.delete(
-          `/award-penalties/${this.selected._id}`
-        );
-        this.$notify({
-          title: "Xóa thành công",
-          titlntalAlign: "right",
-          verticalAlign: "top",
-          type: "success"
-        });
-        this.$router.go();
-      } catch (error) {
-        this.$notify({
-          title: "Xóa thất bại",
           horizontalAlign: "right",
           verticalAlign: "top",
           type: "danger"
