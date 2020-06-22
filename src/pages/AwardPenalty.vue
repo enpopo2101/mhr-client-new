@@ -151,8 +151,8 @@ export default {
   methods: {
     showModalConfirmDelete(index) {
       this.selected = this.data[index];
+      console.log(this.selected);
       this.$modal.show("dialog", {
-        title: "Thông báo",
         text:
           "Hệ thống sẽ xóa hoàn toàn thành tích, khen thưởng, kỷ luật của người dùng. Bạn có chắc chắn xóa?",
         buttons: [

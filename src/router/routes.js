@@ -136,13 +136,13 @@ const routes = [
         meta: { requiresAuth: true }
       },
       {
-        path: "detail-calendar",
+        path: "detail-calendar/:id",
         name: "Chi tiết lịch làm việc",
         component: DetailCalendar,
         meta: { requiresAuth: true }
       },
       {
-        path: "update-calendar",
+        path: "update-calendar/:id",
         name: "Sửa lịch làm việc",
         component: UpdateCalendar,
         meta: { requiresAuth: true }
