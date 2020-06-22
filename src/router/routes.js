@@ -18,7 +18,12 @@ import LaborContract from "@/pages/LaborContract.vue";
 import DepartmentManager from "@/pages/DepartmentManager.vue";
 import MassMail from "@/pages/MassMail.vue";
 import DetailAwardPenalty from "@/pages/DetailAwardPenalty.vue";
-import CreateUser from "../pages/CreateNewUser.vue";
+import CreateUser from "@/pages/CreateNewUser.vue";
+import CreateAwardPenalty from "@/pages/CreateAwardPenalty.vue";
+import UpdateAwardPenalty from "@/pages/UpdateAwardPenalty.vue";
+import CreateCalendar from "@/pages/CreateCalendar.vue";
+import UpdateCalendar from "@/pages/UpdateCalendar.vue";
+import DetailCalendar from "@/pages/DetailCalendar.vue";
 
 const routes = [
   { path: "/login", component: Login, name: "Login" },
@@ -107,11 +112,40 @@ const routes = [
         meta: { requiresAuth: true }
       },
       {
-        path: "detail-award-penalty",
+        path: "detail-award-penalty:id",
         name: "Chi tiết kỉ luật khen thưởng",
         component: DetailAwardPenalty,
-        meta: { requiresAuth: true },
-        component: MassMail
+        meta: { requiresAuth: true }
+      },
+      {
+        path: "create-award-penalty",
+        name: "Tạo mới kỉ luật khen thưởng",
+        component: CreateAwardPenalty,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: "update-award-penalty:id",
+        name: "Sửa kỉ luật khen thưởng",
+        component: UpdateAwardPenalty,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: "create-calendar",
+        name: "Tạo mới lịch làm việc",
+        component: CreateCalendar,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: "detail-calendar",
+        name: "Chi tiết lịch làm việc",
+        component: DetailCalendar,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: "update-calendar",
+        name: "Sửa lịch làm việc",
+        component: UpdateCalendar,
+        meta: { requiresAuth: true }
       }
     ]
   },

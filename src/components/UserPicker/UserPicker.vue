@@ -1,9 +1,9 @@
 <template>
   <div class="form-group row">
-    <label for="controls label" class="col-md-3 col-form-label">{{
+    <label for="controls label" class="col-md-2 col-form-label">{{
       label
     }}</label>
-    <div class="controls col-md-8">
+    <div class="controls col-md-9">
       <vue-autosuggest
         v-model="item"
         :suggestions="filteredOptions"
@@ -11,8 +11,7 @@
         @selected="onSelected"
         :get-suggestion-value="getSuggestionValue"
         :input-props="{
-          class: 'form-control col-md',
-          placeholder: 'Họ tên hoặc email'
+          class: 'form-control col-md'
         }"
       >
         <div
