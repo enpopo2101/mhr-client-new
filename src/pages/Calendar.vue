@@ -429,6 +429,7 @@ export default {
         startDate: moment(data.endDate, "YYYY-MM-DD HH:mm").format(
           "DD-MM-YYYY HH:mm"
         ),
+        fullName: data.user.fullName,
         room: data.room.code
       };
     });
