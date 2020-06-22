@@ -112,7 +112,7 @@ const routes = [
         meta: { requiresAuth: true }
       },
       {
-        path: "detail-award-penalty:id",
+        path: "detail-award-penalty/:id",
         name: "Chi tiết kỉ luật khen thưởng",
         component: DetailAwardPenalty,
         meta: { requiresAuth: true }
@@ -124,7 +124,7 @@ const routes = [
         meta: { requiresAuth: true }
       },
       {
-        path: "update-award-penalty:id",
+        path: "update-award-penalty/:id",
         name: "Sửa kỉ luật khen thưởng",
         component: UpdateAwardPenalty,
         meta: { requiresAuth: true }
