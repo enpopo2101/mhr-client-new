@@ -11,6 +11,7 @@
           value=""
           placeholder="Tên người dùng"
           v-on:keyup.enter="login"
+          maxlength="20"
         />
       </div>
       <div class="textbox">
@@ -22,6 +23,7 @@
           value=""
           placeholder="Mật khẩu"
           v-on:keyup.enter="login"
+          maxlength="50"
         />
       </div>
     </form>

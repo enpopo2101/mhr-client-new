@@ -43,7 +43,7 @@
         </button>
         <button
           class="btn btn-primary"
-          v-on:click="showModalCreateAP"
+          v-on:click="createNewAP"
           style="width: 140px !important"
         >
           <i class="ti-plus" style="margin-right:4px"></i> Thêm mới
@@ -67,19 +67,19 @@
       <div slot="action-slot" slot-scope="props">
         <button
           class="btn btn-primary"
-          v-on:click="showModalViewDetailAP(props.rowData.index - 1)"
+          v-on:click="detailAP(props.rowData.index - 1)"
         >
           <i class="far fa-eye"></i>
         </button>
         <button
           class="btn btn-success"
-          v-on:click="showModalUpdateAP(props.rowData.index - 1)"
+          v-on:click="updateAP(props.rowData.index - 1)"
         >
           <i class="fas fa-edit"></i>
         </button>
         <button
           class="btn btn-danger"
-          v-on:click="deleteAP(props.rowData.index - 1)"
+          v-on:click="showModalConfirmDelete(props.rowData.index - 1)"
         >
           <i class="far fa-trash-alt"></i>
         </button>
@@ -178,189 +178,16 @@
     </modal>
     <!-- modal create end -->
 
-    <!-- modal update -->
-    <modal
-      name="updateAP"
+    <!-- modal confirm delete -->
+    <v-dialog
+      name="confirmDelete"
       :clickToClose="true"
-      :min-width="320"
-      :max-width="740"
-      :pivotY="0.2"
-      width="60%"
-      height="80%"
-    >
-      <div class="container">
-        <div class="row d-flex justify-content-between align-items-baseline">
-          <p style="margin-left: 10px; font-size: 20px">
-            <b>Sửa kỉ luật khen thưởng</b>
-          </p>
-          <button class="btn btn-default" v-on:click="hideModalUpdateAP">
-            <i class="ti-close"></i>
-          </button>
-        </div>
-        <div class="row container">
-          <form class="form-horizontal col-md-12" @submit="submit">
-            <div class="form-group row">
-              <label for="title" class="col-md-3 col-form-label"
-                >Họ và tên</label
-              >
-              <div class="controls col-md-8">
-                <input
-                  class="form-control"
-                  required
-                  v-model="selected.fullName"
-                />
-              </div>
-            </div>
-            <!-- <user-picker
-              v-on:get-user-value="getUserValue"
-              label="Họ và tên"
-              v-model="se"
-            ></user-picker> -->
-            <div class="form-group row">
-              <label for="title" class="col-md-3 col-form-label">Tiêu đề</label>
-              <div class="controls col-md-8">
-                <input class="form-control" required v-model="selected.title" />
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="title" class="col-md-3 col-form-label">Loại</label>
-              <div class="controls col-md-8">
-                <select class="custom-select" v-model="selected.type">
-                  <option value="award">Khen thưởng</option>
-                  <option value="penalty">Kỉ luật</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="title" class="col-md-3 col-form-label"
-                >Ngày ra quyết định</label
-              >
-              <div class="controls col-md-8">
-                <date-picker
-                  v-model="selected.decisionDate"
-                  input-class="form-control"
-                ></date-picker>
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="title" class="col-md-3 col-form-label"
-                >Nội dung</label
-              >
-              <div class="controls col-md-8">
-                <textarea v-model="selected.content" class="form-control" />
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class="row col-md d-flex justify-content-center">
-          <div style="width: 200px !important">
-            <button
-              style="width: 6em"
-              type="submit"
-              @submit="update"
-              class="btn btn-success"
-              @click="update"
-            >
-              Sửa
-            </button>
-            <button
-              style="width: 6em"
-              class="btn btn-danger"
-              @click="hideModalUpdateAP"
-            >
-              Huỷ
-            </button>
-          </div>
-        </div>
-      </div>
-    </modal>
-    <!-- modal update end -->
-
-    <!-- modal view detail AP -->
-    <modal
-      name="viewDetailAP"
-      :clickToClose="true"
-      :min-width="320"
-      :max-width="740"
-      :pivotY="0.2"
-      width="60%"
-      height="80%"
-    >
-      <div class="container">
-        <div class="row d-flex justify-content-between align-items-baseline">
-          <p style="margin-left: 10px; font-size: 20px">
-            <b>Chi tiết kỉ luật khen thưởng</b>
-          </p>
-          <button class="btn btn-default" v-on:click="hideModalViewDetailAP">
-            <i class="ti-close"></i>
-          </button>
-        </div>
-        <div class="row container">
-          <form class="form-horizontal col-md-12">
-            <div class="form-group row">
-              <label for="title" class="col-md-3 col-form-label"
-                >Họ và tên</label
-              >
-              <div class="controls col-md-8">
-                <input
-                  class="form-control"
-                  required
-                  disabled
-                  v-model="selected.fullName"
-                />
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="title" class="col-md-3 col-form-label">Tiêu đề</label>
-              <div class="controls col-md-8">
-                <input
-                  class="form-control"
-                  required
-                  disabled
-                  v-model="selected.title"
-                />
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="title" class="col-md-3 col-form-label">Loại</label>
-              <div class="controls col-md-8">
-                <input
-                  class="form-control"
-                  required
-                  disabled
-                  v-model="selected.type"
-                />
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="title" class="col-md-3 col-form-label"
-                >Ngày ra quyết định</label
-              >
-              <div class="controls col-md-8">
-                <date-picker
-                  v-model="selected.decisionDate"
-                  input-class="form-control"
-                  disabled
-                ></date-picker>
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="title" class="col-md-3 col-form-label"
-                >Nội dung</label
-              >
-              <div class="controls col-md-8">
-                <textarea
-                  disabled
-                  v-model="selected.content"
-                  class="form-control"
-                />
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </modal>
-    <!-- modal view detail AP end -->
+      :pivotY="0.5"
+      :povotX="0.5"
+      width="20%"
+      height="22%"
+    />
+    <!-- modal confirm delete end -->
   </div>
 </template>
 <script>
@@ -380,6 +207,7 @@ export default {
       languages: lang,
       decisionDate: moment().toDate(),
       fields: [
+        { name: "action-slot", title: "Tác vụ", width: "15%" },
         { name: "index", title: "STT", width: "5%" },
         { name: "checkbox-slot", title: "Select", width: "5%" },
         { name: "action-slot", title: "Tác vụ", width: "15%" },
@@ -567,63 +395,54 @@ export default {
         });
       }
     },
-    async update(e) {
-      try {
-        const res = await this.$axios.put(
-          `/award-penalties/${this.selected._id}`,
-          {
-            ...this.selected
-          }
-        );
-        e.preventDefault();
-        // this.$refs.vuetable.refresh();
-        this.$router.go();
-        this.$notify({
-          title: "Sửa thành công",
-          horizontalAlign: "right",
-          verticalAlign: "top",
-          type: "success"
-        });
-        this.$modal.hide("updateAP");
-      } catch (error) {
-        this.$notify({
-          title: "Sửa thất bại",
-          horizontalAlign: "right",
-          verticalAlign: "top",
-          type: "danger"
-        });
-      }
-    },
-    async deleteAP(index) {
+
+    showModalConfirmDelete(index) {
       this.selected = this.data[index];
-      try {
-        const res = await this.$axios.delete(
-          `/award-penalties/${this.selected._id}`
-        );
-        this.$notify({
-          title: "Xóa thành công",
-          titlntalAlign: "right",
-          verticalAlign: "top",
-          type: "success"
-        });
-        this.$router.go();
-      } catch (error) {
-        this.$notify({
-          title: "Xóa thất bại",
-          horizontalAlign: "right",
-          verticalAlign: "top",
-          type: "danger"
-        });
-      }
+      this.$modal.show("dialog", {
+        title: "Thông báo",
+        text:
+          "Hệ thống sẽ xóa hoàn toàn thành tích, khen thưởng, kỷ luật của người dùng. Bạn có chắc chắn xóa?",
+        buttons: [
+          {
+            title: "Đồng ý",
+            handler: () => {
+              try {
+                const res = this.$axios.delete(
+                  `/award-penalties/${this.selected._id}`
+                );
+                this.$notify({
+                  title: "Xóa thành công",
+                  titlntalAlign: "right",
+                  verticalAlign: "top",
+                  type: "success"
+                });
+                this.$router.go();
+              } catch (error) {
+                this.$notify({
+                  title: "Xóa thất bại",
+                  horizontalAlign: "right",
+                  verticalAlign: "top",
+                  type: "danger"
+                });
+              }
+            }
+          },
+          {
+            title: "Bỏ qua"
+          }
+        ]
+      });
     },
-    hideModalCreateAP() {
-      this.$modal.hide("createNewAP");
+    createNewAP() {
+      this.$router.push("/create-award-penalty");
     },
-    hideModalUpdateAP() {
-      this.$modal.hide("updateAP");
+    detailAP(index) {
+      this.selected = this.data[index];
+      this.$router.push({ path: `/detail-award-penalty/${this.selected._id}` });
     },
-    hideModalViewDetailAP() {
-      this.$modal.hide("viewDetailAP");
+    updateAP(index) {
+      this.selected = this.data[index];
+      this.$router.push({ path: `/update-award-penalty/${this.selected._id}` });
     }
   }
 };
