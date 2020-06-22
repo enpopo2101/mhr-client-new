@@ -391,11 +391,11 @@ export default {
       languages: lang,
       decisionDate: moment().toDate(),
       fields: [
+        { name: "action-slot", title: "Tác vụ", width: "20%" },
         { name: "index", title: "STT", width: "5%" },
         { name: "checkbox-slot", title: "Select", width: "5%" },
-        { name: "action-slot", title: "Tác vụ", width: "30%" },
         { name: "fullName", title: "Họ và tên", width: "15%" },
-        { name: "fullName", title: "Địa điểm", width: "15%" },
+        { name: "room", title: "Địa điểm", width: "15%" },
         { name: "title", title: "Tiêu đề", width: "30%" }
       ],
       body: {},
@@ -417,17 +417,23 @@ export default {
     }
   },
   async mounted() {
-    this.selected = {};
     const res = await this.$axios.get("/work-calendars");
     const processData = res.data.data.map((data, index) => {
+      console.log(data);
       return {
+        ...data,
         index: index + 1,
-        fullName: data.user.fullName,
-        ...data
+        startDate: moment(data.startDate, "YYYY-MM-DD HH:mm").format(
+          "DD-MM-YYYY HH:mm"
+        ),
+        startDate: moment(data.endDate, "YYYY-MM-DD HH:mm").format(
+          "DD-MM-YYYY HH:mm"
+        ),
+        room: data.room.code
       };
     });
     this.data = processData;
-    // console.log(processData);
+    console.log(processData);
   },
 
   methods: {
