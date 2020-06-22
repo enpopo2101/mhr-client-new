@@ -11,7 +11,8 @@
         @selected="onSelected"
         :get-suggestion-value="getSuggestionValue"
         :input-props="{
-          class: 'form-control col-md'
+          class: 'form-control col-md',
+          placeholder: 'Họ tên hoặc mã nhân viên'
         }"
       >
         <div
@@ -73,7 +74,7 @@ export default {
       });
     } catch (error) {
       this.$notify({
-        title: "Tải dữ liệu thất bại",
+        title: "Tải dữ liệu người dùng thất bại",
         horizontalAlign: "right",
         verticalAlign: "top",
         type: "danger"
@@ -82,16 +83,15 @@ export default {
   },
   methods: {
     onSelected(item) {
-      this.selected = item.fullName;
+      this.selected = `${item.fullName} - ${item.code}`;
     },
     async onInputChange(text) {
       // event fired when the input changes
       try {
-        // const res = await this.$axios.post("/users/search", { text: text });
         const suggestionData = this.users.filter(user => {
           return user.fullName.includes(text) || user.code.includes(text);
         });
-        console.log(suggestionData);
+
         this.suggestions[0].data = suggestionData;
       } catch (error) {
         this.$notify({
@@ -107,7 +107,9 @@ export default {
      */
     getSuggestionValue(suggestion) {
       this.$emit("get-user-value", suggestion.item);
-      return suggestion.item.fullName ? suggestion.item.fullName : null;
+      return suggestion.item.fullName
+        ? `${suggestion.item.fullName} - ${suggestion.item.code}`
+        : null;
     }
   }
 };
