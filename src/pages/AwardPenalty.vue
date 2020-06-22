@@ -3,8 +3,10 @@
     <div class="filter-panel">
       <div class="row">
         <div class="col-md d-flex align-items-center">
-          <label style="width: 100px !important">Họ và tên</label>
-          <input type="text" class="form-control" />
+          <user-picker
+            v-on:get-user-value="getQueryUserValue"
+            label="Họ và tên"
+          ></user-picker>
         </div>
         <div class="col-md d-flex align-items-center">
           <label style="width: 80px !important">Chức vụ</label>
@@ -12,12 +14,19 @@
         </div>
       </div>
       <div class="row d-flex justify-content-center">
-        <button type="button" class="btn btn-primary">Tìm kiếm</button>
+        <button
+          type="button"
+          v-on:click="search"
+          v-bind:disabled="disabled"
+          class="btn btn-primary"
+        >
+          Tìm kiếm
+        </button>
       </div>
     </div>
     <div class="d-flex justify-content-between align-items-center">
       <div>
-        <select class="custom-select" style="width: 100%">
+        <select class="custom-select" style="width: 100%" v-model="limit">
           <option selected>Số lượng hiển thị</option>
           <option value="30">30</option>
           <option value="50">50</option>
@@ -76,6 +85,14 @@
         </button>
       </div>
     </vuetable>
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info" v-on:click="previousPage()">
+        Previous
+      </button>
+      <button class="btn btn-info" v-on:click="nextPage()">
+        Next
+      </button>
+    </div>
     <!-- modal create -->
     <modal
       name="createNewAP"
@@ -358,13 +375,19 @@ export default {
         tableClass: "table table-bordered table-hover",
         tableBodyClass: "font-size: 20px"
       },
+      limit: 10,
+      disabled: false,
       languages: lang,
       decisionDate: moment().toDate(),
       fields: [
         { name: "index", title: "STT", width: "5%" },
         { name: "checkbox-slot", title: "Select", width: "5%" },
         { name: "action-slot", title: "Tác vụ", width: "15%" },
-        { name: "fullName", title: "Họ và tên", width: "20%" },
+        {
+          name: "fullName",
+          title: "Họ và tên",
+          width: "20%"
+        },
         {
           name: "type",
           title: "Loại",
@@ -375,8 +398,10 @@ export default {
         },
         { name: "title", title: "Tiêu đề", width: "30%" }
       ],
+      userQuery: "",
       body: {},
       data: [],
+      page: 1,
       user: null,
       selected: {
         _id: "",
@@ -391,10 +416,18 @@ export default {
   watch: {
     data(newVal, oldVal) {
       this.$refs.vuetable.refresh();
+    },
+    async limit(newVal, oldVal) {
+      const res = await this.$axios.get("/award-penalties", {
+        params: { limit: this.limit }
+      });
+      this.$refs.vuetable.refresh();
     }
   },
   async mounted() {
-    const res = await this.$axios.get("/award-penalties");
+    const res = await this.$axios.get("/award-penalties", {
+      params: { limit: 10, page: 1 }
+    });
     const processData = res.data.data.map((data, index) => {
       return {
         index: index + 1,
@@ -406,6 +439,75 @@ export default {
   },
 
   methods: {
+    async previousPage() {
+      this.disabled = true;
+      this.page = this.page - 1;
+      const res = await this.$axios.get("/award-penalties", {
+        params: {
+          page: this.userQuery._id ? this.userQuery._id : "",
+          limit: this.limit,
+          page: this.page
+        }
+      });
+      const processData = res.data.data.map((data, index) => {
+        return {
+          index: index + 1,
+          fullName: data.user.fullName,
+          ...data
+        };
+      });
+      this.data = processData;
+    },
+    async nextPage() {
+      this.disabled = true;
+      this.page = this.page + 1;
+      const res = await this.$axios.get("/award-penalties", {
+        params: {
+          page: this.userQuery._id ? this.userQuery._id : "",
+          limit: this.limit,
+          page: this.page
+        }
+      });
+      const processData = res.data.data.map((data, index) => {
+        return {
+          index: index + 1,
+          fullName: data.user.fullName,
+          ...data
+        };
+      });
+      this.data = processData;
+    },
+    async search() {
+      try {
+        this.disabled = true;
+        const res = await this.$axios.get("/award-penalties", {
+          params: { user: this.userQuery._id }
+        });
+        const processData = res.data.data.map((data, index) => {
+          return {
+            index: index + 1,
+            fullName: data.user.fullName,
+            ...data
+          };
+        });
+        this.data = processData;
+        this.$notify({
+          title: "Tìm kiếm thành công",
+          horizontalAlign: "right",
+          verticalAlign: "top",
+          type: "success"
+        });
+        this.disabled = false;
+      } catch (error) {
+        this.disabled = false;
+        this.$notify({
+          title: "Tìm kiếm thất bại",
+          horizontalAlign: "right",
+          verticalAlign: "top",
+          type: "error"
+        });
+      }
+    },
     showModalCreateAP() {
       this.$modal.show("createNewAP", {
         width: "500px",
@@ -436,6 +538,9 @@ export default {
     },
     getUserValue(user) {
       this.user = user;
+    },
+    getQueryUserValue(user) {
+      this.userQuery = user;
     },
     async submit(e) {
       try {
