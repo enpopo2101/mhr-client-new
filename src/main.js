@@ -20,6 +20,7 @@ import axios from "./api/agent";
 import VueAxios from "vue-axios";
 import VModal from "vue-js-modal";
 import VueAutosuggest from "vue-autosuggest";
+import CKEditor from "@ckeditor/ckeditor5-vue"
 
 import PaperDashboard from "./plugins/paperDashboard";
 import "vue-notifyjs/themes/default.css";
@@ -29,6 +30,7 @@ Vue.use(PaperDashboard);
 Vue.use("vue-autosuggest", VueAutosuggest);
 Vue.use(VModal, { dialog: true, dynamic: true, injectModalsContainer: true });
 Vue.prototype.$axios = axios;
+Vue.use( CKEditor );
 
 /* eslint-disable no-new */
 new Vue({

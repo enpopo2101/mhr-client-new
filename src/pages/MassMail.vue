@@ -1,21 +1,50 @@
 <template>
-<div class="container">
-    <div class="row">
-        <div id='example-4' style="margin-right: 30px">
-  <input type="radio" id="khen-thuong" value="Khen thưởng" v-model="picked ">
-  <label for="com-chien-toi">Khen thưởng</label>
-  <input type="radio" id="ki-luat" value="Kỉ luật" v-model="picked ">
-  <label for="dot-bi-xao-toi">Kỉ luật</label>
-  <input type="radio" id="chuyen-cong-tac" value="Chuyển công tác" v-model="picked ">
-  <label for="canh-rau-rung">Chuyển công tác</label>
-  <input type="radio" id="lich-lam-viec" value="Lịch làm việc" v-model="picked ">
-  <label for="canh-rau-rung">Lịch làm việc</label><br>
-  <!-- <span>Chủ đề: {{ picked  }}</span> -->
-        </div>   
+  <div class="container">
+    <!-- <div class="form-group">
+    <div class="input-group">
+      <input type="text" class="form-control" :maxlength="max" v-model="text" />
+      <div class="input-group-addon" v-text="(text.length) +'/' + max"></div>
+    </div>
+  </div> -->
+
+    <div class="radio-button col-md-12 p-0">
+      <div class=" row" id="example-4">
+        <div class="col-md-3">
+          <input
+            type="radio"
+            id="khen-thuong"
+            value="Khen thưởng"
+            v-model="picked"
+          />
+          <label for="com-chien-toi"> Khen thưởng</label>
+        </div>
+        <div class="col-md-3">
+          <input type="radio" id="ki-luat" value="Kỉ luật" v-model="picked" />
+          <label for="dot-bi-xao-toi"> Kỉ luật</label>
+        </div>
+        <div class="col-md-3">
+          <input
+            type="radio"
+            id="chuyen-cong-tac"
+            value="Chuyển công tác"
+            v-model="picked"
+          />
+          <label for="canh-rau-rung"> Chuyển công tác</label>
+        </div>
+        <div class="col-md-3">
+          <input
+            type="radio"
+            id="lich-lam-viec"
+            value="Lịch làm việc"
+            v-model="picked"
+          />
+          <label for="canh-rau-rung"> Lịch làm việc</label><br />
+        </div>
+      </div>
     </div>
 
     <div class="column">
-        <div>
+      <!-- <div>
             <select v-model="selected" multiple>
                 <option disabled value="">Chọn bộ phận</option>
                 <option>58TH1</option>
@@ -23,57 +52,81 @@
                 <option>58TH3</option>
                 <option>58TH4</option>
                 <br>
-                <!-- <span>Selected: {{ selected }}</span> -->
             </select>
+        </div> -->
+
+      <div
+        class="filter-panel"
+        style="margin-top: 20px; padding: 0; border-radius: 0"
+      >
+        <div style="background-color: #c0c0c0; margin: 0.5px">
+          <a style="font-size: 30px;" class="ml-3">Thư mới</a>
         </div>
 
-        <div class="filter-panel" style="margin-top: 20px" >
-      <div style="background-color: #c0c0c0">
-          <a style="font-size: 30px">New mail</a>
-          
-      </div>
+        <div class="column mt-3" style="padding: 0 20px">
+          <span>Đến</span>
+          <input type="text" class="form-control" />
+        </div>
 
-      <div class="column">
-          <div style="margin-top: 25px">
-            <a>Đến</a>
+        <div class="column mt-3" style="padding: 0 20px">
+          <span>Bcc</span>
+          <input type="text" class="form-control" />
+        </div>
+
+        <div class="column mt-3" style="padding: 0 20px">
+          <a>Chủ đề</a>
+          <input
+            type="text"
+            class="form-control"
+            :maxlength="max"
+            v-model="text"
+          />
+          <p style="float: right" class="input-group-addon" v-text="(text.length) +'/' + max"></p>
+        </div>
+
+        <div class="column mt-3" style="padding: 0 20px; margin-bottom: 20px">
+          <a>Nội dung</a>
+          <!-- <input type="text" class="form-control" /> -->
+          <div id="app">
+            <ckeditor
+            id="abc"
+              :editor="editor"
+              v-model="editorData"
+              :config="editorConfig"
+            ></ckeditor>
           </div>
+        </div>
 
-          <div class="column">
-              <div>
-                    <input type="text" class="form-control"/>
-                    <!-- <input type="button" value="radio"> -->
-                    
-              </div>
-                
-          </div>
-          
-      </div>
-
-      <div class="column">
-          <div style="margin-top: 25px">
-            <a>Chủ đề</a>
-          </div>
-
-          <div>
-              <input type="text" class="form-control" />
-          </div>
-      </div>
-
-      <div class="column">
-          <div style="margin-top: 25px">
-            <a>Nội dung</a>
-          </div>
-
-          <div>
-
-              <input type="text" class="form-control" />
-              <!-- <textarea v-model="message" placeholder="Nhập văn bản có nhiều dòng"></textarea> -->
-          </div>
+        <div class="d-flex justify-content-center">
+          <button v-on:click="sendMail" type="button" class="btn btn-primary">
+            Gửi
+          </button>
+        </div>
       </div>
     </div>
-</div>
-
-    
-</div>
-    
+  </div>
 </template>
+<script>
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+export default {
+  data() {
+    return {
+      max: 50,
+      text: "",
+      selected: "",
+      picked: "",
+      editor: ClassicEditor,
+      editorData: "<p>Content of the editor.</p>",
+      editorConfig: {
+        // The configuration of the editor.
+      }
+    };
+  },
+  methods: {
+    sendMail() {
+        var content = 
+      alert(content);
+    }
+  }
+};
+</script>
