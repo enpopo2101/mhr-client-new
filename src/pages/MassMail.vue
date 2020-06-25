@@ -65,12 +65,12 @@
 
         <div class="column mt-3" style="padding: 0 20px">
           <span>Đến</span>
-          <input type="text" class="form-control" />
+          <input type="text" v-model="toMail" class="form-control" />
         </div>
 
         <div class="column mt-3" style="padding: 0 20px">
           <span>Bcc</span>
-          <input type="text" class="form-control" />
+          <input type="text" v-model="bccMail" class="form-control" />
         </div>
 
         <div class="column mt-3" style="padding: 0 20px">
@@ -88,7 +88,7 @@
           <a>Nội dung</a>
           <!-- <input type="text" class="form-control" /> -->
           <div id="app">
-            <ckeditor
+            <ckeditor style="height:500px;"
             id="abc"
               :editor="editor"
               v-model="editorData"
@@ -113,19 +113,24 @@ export default {
     return {
       max: 50,
       text: "",
+      toMail:"",
+      bccMail:"",
       selected: "",
       picked: "",
       editor: ClassicEditor,
       editorData: "<p>Content of the editor.</p>",
       editorConfig: {
-        // The configuration of the editor.
+
       }
     };
   },
   methods: {
     sendMail() {
-        var content = 
-      alert(content);
+        var content = this.editorData
+        var toMail = this.toMail
+        var bccMail = this.bccMail
+        var subject = this.text
+        console.log(content + toMail + bccMail + subject)
     }
   }
 };
