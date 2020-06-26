@@ -210,7 +210,6 @@ export default {
         { name: "action-slot", title: "Tác vụ", width: "15%" },
         { name: "index", title: "STT", width: "5%" },
         { name: "checkbox-slot", title: "Select", width: "5%" },
-        { name: "action-slot", title: "Tác vụ", width: "15%" },
         {
           name: "fullName",
           title: "Họ và tên",
