@@ -24,6 +24,7 @@ import UpdateAwardPenalty from "@/pages/UpdateAwardPenalty.vue";
 import CreateCalendar from "@/pages/CreateCalendar.vue";
 import UpdateCalendar from "@/pages/UpdateCalendar.vue";
 import DetailCalendar from "@/pages/DetailCalendar.vue";
+import DetailAccount from "@/pages/DetailAccount.vue";
 
 const routes = [
   { path: "/login", component: Login, name: "Login" },
@@ -145,6 +146,12 @@ const routes = [
         path: "update-calendar/:id",
         name: "Sửa lịch làm việc",
         component: UpdateCalendar,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: "detail-account",
+        name: "Chi tiết tài khoản",
+        component: DetailAccount,
         meta: { requiresAuth: true }
       }
     ]

@@ -12,6 +12,7 @@
           placeholder="Tên đăng nhập"
           v-on:keyup.enter="login"
           maxlength="20"
+          ref="username"
         />
       </div>
       <div class="textbox">
@@ -24,15 +25,22 @@
           placeholder="Mật khẩu"
           v-on:keyup.enter="login"
           maxlength="50"
+          ref="password"
         />
+      </div>
+      <div
+        class="wrong-password"
+        style="color: red; text-align: start"
+        v-show="seen"
+      >
+        Mật khẩu sai
       </div>
     </form>
     <div class="flex-row">
       <div class="check-remember">
         <input type="checkbox" />
-        <label>Remember me</label>
+        <label>Nhớ tài khoản</label>
       </div>
-      <a href="#">Quên mật khẩu ?</a>
     </div>
     <button v-on:click="login">Đăng nhập</button>
   </div>
@@ -41,6 +49,7 @@
 export default {
   data() {
     return {
+      seen: false,
       username: null,
       password: null
     };
@@ -48,12 +57,41 @@ export default {
   methods: {
     async login() {
       try {
+        if (!this.username && !this.password) {
+          this.$refs.password.focus();
+          return this.$notify({
+            title: "Bạn chưa nhập Tên đăng nhập và mật khẩu",
+            horizontalAlign: "right",
+            verticalAlign: "top",
+            type: "danger"
+          });
+          return;
+        }
+        if (!this.username) {
+          this.$refs.username.focus();
+          return this.$notify({
+            title: "Bạn chưa nhập tên đăng nhập",
+            horizontalAlign: "right",
+            verticalAlign: "top",
+            type: "danger"
+          });
+          return;
+        } else if (!this.password) {
+          this.$refs.password.focus();
+          return this.$notify({
+            title: "Bạn chưa nhập mật khẩu",
+            horizontalAlign: "right",
+            verticalAlign: "top",
+            type: "danger"
+          });
+          return;
+        }
         const res = await this.$axios.post("/users/login", {
-          username: this.username,
+          username: this.username.toLowerCase(),
           password: this.password
         });
         this.$notify({
-          title: "Login Success",
+          title: "Đăng nhập thành công",
           horizontalAlign: "right",
           verticalAlign: "top",
           type: "success"
@@ -63,12 +101,14 @@ export default {
         // console.log(res.data);
         this.$router.push("/dashboard", { fullName: res.data.fullName });
       } catch (error) {
+        this.seen = true;
         this.$notify({
-          title: "Login failed",
+          title: "Sai tên đăng nhập hoặc mật khẩu",
           horizontalAlign: "right",
           verticalAlign: "top",
           type: "danger"
         });
+        this.disabled = "false";
       }
     }
   }
@@ -102,7 +142,7 @@ export default {
   border-bottom: 1px solid #177dff;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: start;
   margin-bottom: 20px;
 }
 
