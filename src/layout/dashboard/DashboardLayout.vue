@@ -5,7 +5,7 @@
         <sidebar-link to="/stats" name="Tài khoản" icon="ti-user" />
         <sidebar-link
           to="human-resource-manager"
-          name="Quản lý nhân viên"
+          name="Quản lý tài khoản"
           icon="ti-id-badge"
         />
         <sidebar-link to="/calendar" name="Lịch làm việc" icon="ti-calendar" />

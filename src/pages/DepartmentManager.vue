@@ -377,9 +377,9 @@ export default {
       languages: lang,
       decisionDate: moment().toDate(),
       fields: [
+        { name: "action-slot", title: "Tác vụ", width: "20%" },
         { name: "index", title: "STT", width: "5%" },
         { name: "checkbox-slot", title: "Select", width: "5%" },
-        { name: "action-slot", title: "Tác vụ", width: "20%" },
         { name: "room", title: "Tên phòng làm việc", width: "30%" },
         { name: "status", title: "Trạng thái", width: "30%" }
       ],

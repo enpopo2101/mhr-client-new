@@ -9,7 +9,7 @@
           type="text"
           name=""
           value=""
-          placeholder="Tên người dùng"
+          placeholder="Tên đăng nhập"
           v-on:keyup.enter="login"
           maxlength="20"
         />

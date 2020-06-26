@@ -41,7 +41,7 @@ const routes = [
       },
       {
         path: "human-resource-manager",
-        name: "Quản lí nhân viên",
+        name: "Quản lí tài khoản",
         component: HumanResourceManager,
         meta: { requiresAuth: true }
       },
