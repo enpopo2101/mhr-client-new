@@ -19,7 +19,7 @@
         <i class="fas fa-lock"></i>
         <input
           v-model="password"
-          type="password"
+          :type="type"
           name=""
           value=""
           placeholder="Mật khẩu"
@@ -27,13 +27,18 @@
           maxlength="50"
           ref="password"
         />
+        <i
+          class="fas fa-eye"
+          @click="showPassword"
+          style="cursor: pointer;"
+        ></i>
       </div>
       <div
-        class="wrong-password"
+        class="invalid-login"
         style="color: red; text-align: start"
         v-show="seen"
       >
-        Mật khẩu sai
+        Tên đăng nhập hoặc mật khẩu sai
       </div>
     </form>
     <div class="flex-row">
@@ -51,10 +56,18 @@ export default {
     return {
       seen: false,
       username: null,
-      password: null
+      password: null,
+      type: "password"
     };
   },
   methods: {
+    showPassword() {
+      if (this.type === "password") {
+        this.type = "text";
+      } else {
+        this.type = "password";
+      }
+    },
     async login() {
       try {
         if (!this.username && !this.password) {
@@ -87,7 +100,7 @@ export default {
           return;
         }
         const res = await this.$axios.post("/users/login", {
-          username: this.username.toLowerCase(),
+          username: this.username.toLowerCase().trim(),
           password: this.password
         });
         this.$notify({
