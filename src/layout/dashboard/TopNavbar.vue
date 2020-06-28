@@ -61,7 +61,7 @@ export default {
     },
     logout() {
       localStorage.removeItem("token");
-      this.$router.go(-1);
+      this.$router.push("/login");
     },
     capitalizeFirstLetter(string) {
       return string.charAt(0).toUpperCase() + string.slice(1);

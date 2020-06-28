@@ -43,7 +43,7 @@
     </form>
     <div class="flex-row">
       <div class="check-remember">
-        <input type="checkbox" />
+        <input type="checkbox" v-model="rememberLogin" />
         <label>Nhớ tài khoản</label>
       </div>
     </div>
@@ -52,12 +52,35 @@
 </template>
 <script>
 export default {
+  mounted() {
+    const rememberLoginInStorage = localStorage.getItem("rememberLogin");
+    if (rememberLoginInStorage) {
+      this.username = localStorage.getItem("username");
+      this.password = localStorage.getItem("password");
+      this.rememberLogin = localStorage.getItem("rememberLogin");
+    }
+  },
+
+  watch: {
+    password(newVal, oldVal) {
+      if (newVal.length > 50) {
+        this.password = newVal.slice(0, 50);
+      }
+    },
+    username(newVal, oldVal) {
+      if (newVal.length > 20) {
+        this.username = newVal.slice(0, 20);
+      }
+    }
+  },
+
   data() {
     return {
       seen: false,
       username: null,
       password: null,
-      type: "password"
+      type: "password",
+      rememberLogin: false
     };
   },
   methods: {
@@ -78,7 +101,6 @@ export default {
             verticalAlign: "top",
             type: "danger"
           });
-          return;
         }
         if (!this.username) {
           this.$refs.username.focus();
@@ -88,16 +110,14 @@ export default {
             verticalAlign: "top",
             type: "danger"
           });
-          return;
         } else if (!this.password) {
           this.$refs.password.focus();
           return this.$notify({
-            title: "Bạn chưa nhập mật khẩu",
+            title: "Mật khẩu không hợp lệ",
             horizontalAlign: "right",
             verticalAlign: "top",
             type: "danger"
           });
-          return;
         }
         const res = await this.$axios.post("/users/login", {
           username: this.username.toLowerCase().trim(),
@@ -109,14 +129,24 @@ export default {
           verticalAlign: "top",
           type: "success"
         });
+        if (this.rememberLogin) {
+          localStorage.setItem("username", this.username);
+          localStorage.setItem("password", this.password);
+          localStorage.setItem("rememberLogin", this.rememberLogin);
+        } else {
+          localStorage.removeItem("username");
+          localStorage.removeItem("password");
+          localStorage.removeItem("rememberLogin");
+        }
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("fullName", res.data.fullName);
         // console.log(res.data);
         this.$router.push("/dashboard", { fullName: res.data.fullName });
       } catch (error) {
         this.seen = true;
+        console.log(error);
         this.$notify({
-          title: "Sai tên đăng nhập hoặc mật khẩu",
+          title: "Tên đăng nhập hoặc mật khẩu chưa chính xác",
           horizontalAlign: "right",
           verticalAlign: "top",
           type: "danger"
