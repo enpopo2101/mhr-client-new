@@ -62,6 +62,12 @@ export default {
     logout() {
       localStorage.removeItem("token");
       this.$router.push("/login");
+      return this.$notify({
+        title: "Đăng xuất thành công",
+        horizontalAlign: "right",
+        verticalAlign: "top",
+        type: "success"
+      });
     },
     capitalizeFirstLetter(string) {
       return string.charAt(0).toUpperCase() + string.slice(1);
