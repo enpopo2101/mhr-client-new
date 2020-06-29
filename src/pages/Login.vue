@@ -123,6 +123,14 @@ export default {
           username: this.username.toLowerCase().trim(),
           password: this.password
         });
+        if (res.data.status === 2) {
+          return this.$notify({
+            title: res.data.message,
+            horizontalAlign: "right",
+            verticalAlign: "top",
+            type: "danger"
+          });
+        }
         this.$notify({
           title: "Đăng nhập thành công",
           horizontalAlign: "right",
@@ -146,7 +154,7 @@ export default {
         this.seen = true;
         console.log(error);
         this.$notify({
-          title: "Tên đăng nhập hoặc mật khẩu chưa chính xác",
+          title: "Đã có lỗi xảy ra",
           horizontalAlign: "right",
           verticalAlign: "top",
           type: "danger"
