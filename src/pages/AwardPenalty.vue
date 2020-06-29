@@ -2,7 +2,7 @@
   <div class="container">
     <div class="filter-panel">
       <div class="row">
-        <div class="col-md d-flex align-items-center">
+        <div class="col-md" style="margin-top: 20px">
           <user-picker
             v-on:get-user-value="getQueryUserValue"
             label="Họ và tên"
