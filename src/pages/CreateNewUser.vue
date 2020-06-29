@@ -238,7 +238,7 @@ export default {
           verticalAlign: "top",
           type: "success"
         });
-        this.$route.go();
+        this.$route.go(-1);
       } catch (error) {
         this.$notify({
           title: "Tạo tài khoản thất bại",

@@ -7,6 +7,7 @@
           to="human-resource-manager"
           name="Quản lý tài khoản"
           icon="ti-id-badge"
+          v-if="forAdmin"
         />
         <sidebar-link to="/calendar" name="Lịch làm việc" icon="ti-calendar" />
         <sidebar-link
@@ -66,6 +67,7 @@
 </template>
 <style lang="scss"></style>
 <script>
+import * as common from "../../common/common";
 import TopNavbar from "./TopNavbar.vue";
 import DashboardContent from "./Content.vue";
 import MobileMenu from "./MobileMenu";
@@ -75,6 +77,18 @@ export default {
     DashboardContent,
     MobileMenu
   },
+  data() {
+    return {
+      hasPermision: true,
+      forAdmin: false
+    };
+  },
+
+  mounted() {
+    this.forAdmin = common.hasPermision(common.getRoles(), ["admin"]);
+    console.log(this.hasPermision, "permision");
+  },
+
   methods: {
     toggleSidebar() {
       if (this.$sidebar.showSidebar) {

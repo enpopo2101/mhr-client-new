@@ -1,3 +1,4 @@
+import _ from "lodash";
 export const roles = {
   user: "Người dùng",
   admin: "Admin",
@@ -9,4 +10,15 @@ export const roles = {
   ql_chucvu: "QL Chức vụ",
   ql_lich: "QL Lịch làm việc",
   mail: "Mail"
+};
+
+export const getRoles = function() {
+  const roles = localStorage.getItem("roles");
+  return JSON.parse(roles);
+};
+
+export const hasPermision = function(roles, rolesNeedCheck) {
+  let rolesArray = _.isArray(roles) ? roles : [];
+
+  return _.intersection(rolesArray, rolesNeedCheck).length ? true : false;
 };
