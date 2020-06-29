@@ -14,19 +14,19 @@
           name="Phòng ban"
           icon="ti-flag-alt"
         />
-        <sidebar-link to="/icons" name="Chức vụ" icon="ti-briefcase" />
+        <!-- <sidebar-link to="/icons" name="Chức vụ" icon="ti-briefcase" /> -->
         <sidebar-link
           to="/labor-contract"
           name="Hợp đồng"
           icon="ti-clipboard"
         />
-        <sidebar-link to="/maps" name="Điều chuyển công tác" icon="ti-share" />
+        <!-- <sidebar-link to="/maps" name="Điều chuyển công tác" icon="ti-share" /> -->
         <sidebar-link
           to="/award-penalty"
           name="Khen thưởng - Kỉ luật"
           icon="ti-gift"
         />
-        <sidebar-link to="/icons" name="Icons" icon="ti-pencil-alt2" />
+
         <sidebar-link to="/mass-mail" name="Massmail" icon="ti-bell" />
       </template>
       <mobile-menu>

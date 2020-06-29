@@ -148,6 +148,7 @@ export default {
         }
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("fullName", res.data.fullName);
+        localStorage.setItem("_id", res.data._id);
         // console.log(res.data);
         this.$router.push("/dashboard", { fullName: res.data.fullName });
       } catch (error) {

@@ -3,20 +3,11 @@
     <div>
       <form @submit.prevent>
         <div class="row">
-          <div class="col-md-5">
-            <fg-input
-              type="text"
-              label="Quyền"
-              placeholder="Admin"
-              v-model="user.company"
-            >
-            </fg-input>
-          </div>
           <div class="col-md-3">
             <fg-input
               type="text"
-              label="Tên người dùng"
-              placeholder="Tên người dùng"
+              label="Tên đăng nhập"
+              placeholder="Tên đăng nhập"
               v-model="user.username"
             >
             </fg-input>
@@ -38,24 +29,17 @@
               type="text"
               label="Họ và tên"
               placeholder="Họ và tên"
-              v-model="user.firstName"
+              v-model="user.fullName"
             >
             </fg-input>
           </div>
-          <div class="col-md-4">
-            <fg-input type="select" label="Giới tính" placeholder="Giới tính">
-            </fg-input>
-            <!-- <select class="custom-select" label="Giới tính">
-                  <option value="award">Khen thưởng</option>
-                  <option value="penalty">Kỉ luật</option>
-            </select> -->
-          </div>
+
           <div class="col-md-4">
             <fg-input
               type="text"
               label="SĐT"
               placeholder="SĐT"
-              v-model="user.city"
+              v-model="user.cellphone"
             >
             </fg-input>
           </div>
@@ -72,11 +56,21 @@
             </fg-input>
           </div> -->
           <div class="col-md-8">
-            <fg-input type="text" label="Quê quán" placeholder="Quê quán">
+            <fg-input
+              type="text"
+              label="Địa chỉ"
+              placeholder="Địa chỉ"
+              v-model="user.address"
+            >
             </fg-input>
           </div>
           <div class="col-md-4">
-            <fg-input type="text" label="Ngày sinh" placeholder="yyyy-mm-dd">
+            <fg-input
+              type="text"
+              label="Ngày sinh"
+              placeholder="yyyy-mm-dd"
+              v-model="user.birthday"
+            >
             </fg-input>
           </div>
         </div>
@@ -87,7 +81,7 @@
               type="text"
               label="Trạng thái"
               placeholder="Trạng thái"
-              v-model="user.country"
+              v-model="user.status"
             >
             </fg-input>
           </div>
@@ -132,7 +126,16 @@
   </card>
 </template>
 <script>
+import { assignIn } from "lodash";
 export default {
+  async mounted() {
+    const id = localStorage.getItem("_id");
+    const res = await this.$axios.get(`/users/${id}`);
+    let data = res.data.data;
+    data.status = data.status ? "Đang hoạt động" : "Đã xoá";
+    this.user = assignIn(this.user, data);
+    console.log(this.user);
+  },
   data() {
     return {
       user: {
@@ -141,9 +144,10 @@ export default {
         email: "",
         firstName: "Chet",
         lastName: "Faker",
-        address: "Melbourne, Australia",
+        address: "640 Đường Láng, Đống Đa, Hà Nội",
         city: "Melbourne",
         postalCode: "",
+        cellphone: "0326528686",
         aboutMe: `We must accept finite disappointment, but hold on to infinite hope.`
       },
       data: {}

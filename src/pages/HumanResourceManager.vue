@@ -384,8 +384,8 @@ export default {
         { name: "checkbox-slot", title: "Select", width: "5%" },
         { name: "index", title: "STT", width: "5%" },
         { name: "code", title: "Mã người dùng", width: "20%" },
-        { name: "fullName", title: "Họ và tên", width: "20%" },
-        { name: "userName", title: "Tên đăng nhập", width: "30%" }
+        { name: "username", title: "Họ và tên", width: "20%" },
+        { name: "fullName", title: "Tên đăng nhập", width: "30%" }
       ],
       body: {},
       data: [],
@@ -398,11 +398,10 @@ export default {
     }
   },
   async mounted() {
-    const res = await this.$axios.get("/award-penalties");
+    const res = await this.$axios.get("/users");
     const processData = res.data.data.map((data, index) => {
       return {
         index: index + 1,
-        fullName: data.user.fullName,
         ...data
       };
     });

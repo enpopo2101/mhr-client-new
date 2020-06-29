@@ -28,9 +28,9 @@
       <div>
         <select class="custom-select" style="width: 100%" v-model="limit">
           <option selected>Số lượng hiển thị</option>
+          <option value="10">10</option>
+          <option value="20">20</option>
           <option value="30">30</option>
-          <option value="50">50</option>
-          <option value="70">70</option>
         </select>
       </div>
       <div>
@@ -108,7 +108,7 @@
           <p style="margin-left: 10px; font-size: 20px">
             <b>Thêm mới nhân viên kỉ luật khen thưởng</b>
           </p>
-          <button class="btn btn-default" v-on:click="hideModalCreateAP">
+          <button class="btn btn-default">
             <i class="ti-close"></i>
           </button>
         </div>
@@ -165,11 +165,7 @@
             >
               Tạo
             </button>
-            <button
-              style="width: 6em"
-              class="btn btn-danger"
-              @click="hideModalCreateAP"
-            >
+            <button style="width: 6em" class="btn btn-danger">
               Huỷ
             </button>
           </div>
@@ -248,6 +244,14 @@ export default {
       const res = await this.$axios.get("/award-penalties", {
         params: { limit: this.limit }
       });
+      const processData = res.data.data.map((data, index) => {
+        return {
+          index: index + 1,
+          fullName: data.user.fullName,
+          ...data
+        };
+      });
+      this.data = processData;
       this.$refs.vuetable.refresh();
     }
   },

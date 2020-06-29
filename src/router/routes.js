@@ -83,29 +83,12 @@ const routes = [
         meta: { requiresAuth: true }
       },
       {
-        path: "icons",
-        name: "icons",
-        component: Icons,
-        meta: { requiresAuth: true }
-      },
-      {
-        path: "maps",
-        name: "maps",
-        component: Maps,
-        meta: { requiresAuth: true }
-      },
-      {
         path: "department-manager",
         name: "Quản lý phòng làm việc",
         component: DepartmentManager,
         meta: { requiresAuth: true }
       },
-      {
-        path: "table-list",
-        name: "table-list",
-        component: TableList,
-        meta: { requiresAuth: true }
-      },
+
       {
         path: "mass-mail",
         name: "Massmail",
